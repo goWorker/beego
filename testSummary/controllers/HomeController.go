@@ -15,7 +15,7 @@ func (c *HomeController) Index() {
 	//models.PrintUserByORM()
 	if table,err:= new(models.AutoSummary).HomeData();err==nil{
 		fmt.Println(table)
-		c.Data["Content"]=table
+		c.Data["Contents"]=table
 	}else{
 		beego.Error(err.Error())
 	}
