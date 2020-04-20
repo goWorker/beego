@@ -58,28 +58,29 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>CaseName</th>
-                        <th>Tag</th>
-                        <th>Build</th>
-                        <th>Execute Time</th>
-                        <th>Log</th>
-                        <th>Status</th>
-                        <th>Jira</th>
-                        <th>Comments</th>
+                        <td>CaseName</td>
+                        <td>Tag</td>
+                        <td>Build</td>
+                        <td>Execute Time</td>
+                        <td>Execute Date</td>
+                        <td>Status</td>
+                        <td>Log</td>
+                        <td>Jira</td>
+                        <td>Comments</td>
                       </tr>
                     </thead>
                     <tbody>
                     {{range $case:=$.Contents}}
                       <tr>
-                      <td>{{$case.CaseName}}</td>
-                      <td>{{$case.CaseTag}}</td>
-                      <td>{{$case.Build}}</td>
-                      <td>{{$case.ExecuteTime}}</td>
-                      <td>{{$case.ExecuteDate}}</td>
-                      <td>{{$case.Log}}</td>
-                      <td>{{$case.Status}}</td>
-                      <td>{{$case.Jira}}</td>
-                      <td>{{$case.Comments}}</td>
+                      <td><label>{{$case.CaseName}}</label></td>
+                      <td><label>{{$case.CaseTag}}</label></td>
+                      <td><label>{{$case.Build}}</label></td>
+                      <td><label>{{$case.ExecuteTime}}</label></td>
+                        <td><label>{{$case.ExecuteDate}}</label></td>
+                        <td><label>{{$case.Status}}</label></td>
+                      <td><label>{{$case.Log}}</label></td>
+                      <td><label>{{$case.Jira}}</label></td>
+                      <td><label>{{$case.Comments}}</label></td>
                       </tr>
                     {{end}}
                     </tbody>
