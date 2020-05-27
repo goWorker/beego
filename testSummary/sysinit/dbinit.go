@@ -1,10 +1,10 @@
 package sysinit
 
 import (
-	_"testSummary/models"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	_"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
+	_ "testSummary/models"
 )
 
 func dbinit(aliases ...string) {
@@ -53,4 +53,5 @@ func registDatabase(alias string) {
 	orm.RegisterDataBase(dbAlias, "mysql", dbUser+":"+dbPwd+"@tcp("+dbHost+":"+dbPort+")/"+dbName+"?charset=utf8", 30)
 
 }
+
 

@@ -11,6 +11,7 @@
 <link href="../static/css/bootstrap.min.css" rel="stylesheet">
 <link href="../static/css/materialdesignicons.min.css" rel="stylesheet">
 <link href="../static/css/style.css" rel="stylesheet">
+{{/*  <link href="../static/css/main.css" rel="stylesheet">*/}}
 
 </head>
   
@@ -54,48 +55,57 @@
                 <h2>Test Result</h2>
               </div>
               <div class="card-body">
+                <form id="submitRequest" success-msg={{ $.Message }} fail-msg="Sorry it seems that server is not responding, Sorry for the inconvenience!" novalidate>
+                </form>
                 <div class="table-responsive">
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <td>CaseName</td>
-                        <td>Tag</td>
-                        <td>Build</td>
-                        <td>Execute Time</td>
-                        <td>Execute Date</td>
-                        <td>Status</td>
-                        <td>Log</td>
-                        <td>Jira</td>
-                        <td>Comments</td>
+                        <td><label>CaseName</label></td>
+                        <td><label>Tag</label></td>
+                        <td><label>Build</label></td>
+                        <td><label>Execute Time</label></td>
+                        <td><label>Execute Date</label></td>
+                        <td><label>Status</label></td>
+                        <td><label>Log</label></td>
+                        <td><label>Jira</label></td>
+                        <td><label>Comments</label></td>
                       </tr>
                     </thead>
                     <tbody>
                     {{range $case:=$.Contents}}
                       <tr>
-                      <td><label>{{$case.CaseName}}</label></td>
-                      <td><label>{{$case.CaseTag}}</label></td>
-                      <td><label>{{$case.Build}}</label></td>
-                      <td><label>{{$case.ExecuteTime}}</label></td>
-                        <td><label>{{$case.ExecuteDate}}</label></td>
-                        <td><label>{{$case.Status}}</label></td>
-                      <td><label>{{$case.Log}}</label></td>
-                      <td><label>{{$case.Jira}}</label></td>
-                      <td><label>{{$case.Comments}}</label></td>
+                      <td>{{$case.CaseName}}</td>
+
+                        <td>{{if $case.CaseTag }} {{$case.CaseTag}}{{else}} {{"empty"}} {{end}}</td>
+                      <td>{{$case.Build}}</td>
+                        <td>{{if $case.ExecuteTime }} {{$case.ExecuteTime}}{{else}} {{"empty"}} {{end}}</td>
+                        <td>{{$case.ExecuteDate}}</td>
+                        <td>{{if $case.Status }} {{$case.Status}}{{else}} {{"UNEXECUTED"}} {{end}}</td>
+
+                      <td>{{$case.Log}}</td>
+                      <td>{{$case.Jira}}</td>
+                      <td>{{$case.Comments}}</td>
                       </tr>
                     {{end}}
                     </tbody>
                   </table>
+
                 </div>
+
               </div>
+
+              <div right>{{ template "paginator.html" . }}</div>
             </div>
           </div>
-          
+
 
 
       </div>
-      
+
     </main>
     <!--End 页面主要内容-->
+
   </div>
 </div>
 
