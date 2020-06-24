@@ -14,6 +14,11 @@ golang.org
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+mycode/output.xml
+newblog/tmp/
+officialsummary/officialsummary
+*.DS_Store
+
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
