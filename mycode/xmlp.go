@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 	"time"
 )
 
-const url = "http://172.25.153.50:8080/view/6.0.0/job/Felix_BasicAndSpring/54/robot/report/output.xml"
+
+
 type Robot struct{
 	//XMLName		xml.Name	`xml:"robot"`
 	Suite 	[]Suite		`xml:"suite"`
@@ -79,6 +81,8 @@ type AutoSummary struct {
 
 }
 
+
+
 func ConvertTimeToSeconds(timestring string) int64{
 	tm2, _ := time.Parse("20060102 03:04:05", timestring)
 
@@ -138,7 +142,28 @@ func ConvertXML(urls string) {
 	//}
 }
 func main(){
-	ConvertXML(url)
+	//ConvertXML(url)
+	url := "http://172.25.153.50:8080/view/6.0.0/job/Felix_BasicAndSpring/60/robot/report/output.xml"
+	re,_:= regexp.Compile("http://172.25.153.50:8080/view/(.*)/job/(.*)/(.*)/robot/report/output.xml")
+
+	submatch := re.FindSubmatch([]byte(url))
+	//fmt.Println("FindSubmatch", submatch)
+	//for _, v := range submatch {
+	//	fmt.Println(string(v))
+	//}
+	releasNO := string(submatch[1])
+	jobName := string(submatch[2])
+	fmt.Println(releasNO)
+	fmt.Println(jobName)
+
+	////定义和上面的FindIndex一样
+	//submatchindex := re.FindSubmatchIndex([]byte(url))
+	//fmt.Println(submatchindex)
+
+	//FindAllSubmatch,查找所有符合条件的子匹配
+
+	//FindAllSubmatchIndex,查找所有字匹配的index
+
 }
 //func main(){
 //	at := AutoSummary{}
