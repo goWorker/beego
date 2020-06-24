@@ -11,7 +11,21 @@ type Robot struct{
 	//XMLName		xml.Name	`xml:"robot"`
 	Suite 	[]Suite		`xml:"suite"`
 	Generated 	string 		`xml:"generated,attr"`
-	//Statistics	[]Statistics	`xml:"statistics"`
+	Statistics	[]Statistics	`xml:"statistics"`
+}
+type Statistics struct {
+	XMLName		xml.Name	`xml:"statistics"`
+	Totals 	[]Total `xml:"total"`
+
+}
+type Total struct{
+	States 	[]Stats		`xml:"stat"`
+}
+type Stats struct{
+	//XMLName		xml.Name	`xml:stat`
+	Fail 	string 	`xml:"fail,attr"`
+	Pass 	string 	`xml:"pass,attr"`
+	Stat 	string 	`xml:",innerxml"`
 }
 
 type Suite struct{

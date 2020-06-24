@@ -23,10 +23,10 @@ type AutoSummary struct {
 	BackupInt	int			`orm:"size(100);null" json:"backup_int"`
 
 }
-
 func (m *AutoSummary) TableName() string {
 	return TNAutoSummary()
 }
+
 
 func NewAutoSummary() *AutoSummary {
 	return &AutoSummary{}
