@@ -1,11 +1,15 @@
 package controllers
 
 import (
+	"fmt"
+	"regexp"
+	"strconv"
+	"time"
+
 	//"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
-	//"strings"
-	"officialsummary/common"
+
 	"officialsummary/models"
 	"officialsummary/utils"
 )
@@ -16,71 +20,85 @@ type HomeController struct {
 
 func (c *HomeController) Index() {
 
-	pageIndex, _ := c.GetInt("p", 1)
+	//pageIndex, _ := c.GetInt("p", 1)
 	//private, _ := c.GetInt("private", 1)
-	table,totalCount,err:= new(models.JobList).HomeData(pageIndex,common.PageSize)
+	table,err:= new(models.JobList).HomeData()
 	if err!=nil{
 		logs.Error("HomeController.Index => ", err)
 		c.Abort("404")
 	}
-	if totalCount > 0{
-		c.Data["paginator"]=utils.NewPaginator(c.Ctx.Request,common.PageSize,totalCount)
-	}else{
-		c.Data["paginator"]=""
-	}
+	//if totalCount > 0{
+	//	c.Data["paginator"]=utils.NewPaginator(c.Ctx.Request,common.PageSize,totalCount)
+	//}else{
+	//	c.Data["paginator"]=""
+	//}
 	c.Data["Contents"]=table
 		c.TplName = "index.html"
 
 }
 func (c *HomeController) ReceiveDataFromJenkins() {
-	//url:=c.GetString("url")
-	//fmt.Println(url)
-	//err,detail := utils.SwitchXMLToStruct(url)
-	//if err != nil{
-	//	return
-	//}
-	//c.Ctx.ResponseWriter.WriteHeader(200)
+	url:=c.GetString("url")
+	fmt.Println(url)
+	err,detail := utils.SwitchXMLToStruct(url)
+	if err != nil{
+		fmt.Println(err)
+		return
+	}
+	c.Ctx.ResponseWriter.WriteHeader(200)
 	//c.Data["Message"] = "We are getting the "
 	//c.TplName = "index.html"
-	////fmt.Println(detail)
-	//at := models.NewJobList()
-	//for i := 0; i < len(detail.Suite); i++ {
-	//	for suite := 0; suite < len(detail.Suite[i].Suite); suite++ {
-	//		for test := 0; test < len(detail.Suite[i].Suite[suite].Test); test++ {
-	//			//fmt.Println(detail.Suite[i].Suite[suite].Test[test].Name)
-	//			at.JobName = detail.Suite[i].Suite[suite].Test[test].Name
-	//
-	//			//fmt.Println(detail.Suite[i].Suite[suite].Test[test].Tags)
-	//			for tag := 0; tag <len(detail.Suite[i].Suite[suite].Test[test].Tags);tag++{
-	//				casetagstr := strings.Replace(strings.Trim(fmt.Sprint(detail.Suite[i].Suite[suite].Test[test].Tags[tag].Tag), "[]"), " ", ",", -1)
-	//				at.Tag=casetagstr
-	//			}
-	//			for status := 0; status < len(detail.Suite[i].Suite[suite].Test[test].Status); status++ {
-	//				//fmt.Println(detail.Suite[i].Suite[suite].Test[test].Status[status].Status)
-	//				at.Status = detail.Suite[i].Suite[suite].Test[test].Status[status].Status
-	//				starttime := detail.Suite[i].Suite[suite].Test[test].Status[status].Starttime
-	//				endtime := detail.Suite[i].Suite[suite].Test[test].Status[status].Endtime
-	//				at.ExecuteTime = utils.ConvertTimeToSeconds(endtime) - utils.ConvertTimeToSeconds(starttime)
-	//
-	//			}
-	//			if err := at.Insert(); err != nil {
-	//				fmt.Println("Insert db error")
-	//			}
-	//			at.BackupInt = 0
-	//			at.BackupStr = ""
-	//			at.Comments = ""
-	//			at.Build = ""
-	//			at.Jira = ""
-	//			at.Log = ""
-	//
-	//
-	//		}
-	//
-	//	}
-	//
-	//}
+	//fmt.Println(detail)
+	jl := models.NewJobList()
+	re,_:= regexp.Compile("http://172.25.153.50:8080/view/(.*)/job/(.*)/(.*)/robot/report/output.xml")
+	submatch := re.FindSubmatch([]byte(url))
+	releasNO := string(submatch[1])
+	jobName := string(submatch[2])
+	jl.ReleaseVersion = releasNO
+	jl.JobName = jobName
+
+	fmt.Println(detail.Generated)
+	jl.FinishedTime,err = time.Parse("20060102 15:04:05.000",detail.Generated)
+	fmt.Println(time.Parse("2006-01-02T15:04:05.000Z",detail.Generated))
+	if err != nil{
+		fmt.Println("Get finished time error")
+	}
+	for i := 0; i <len(detail.Suite); i++{
+		fmt.Println(detail.Suite[i].Status)
+		jl.Status=detail.Suite[i].Status.Status
+
+			//switch detail.Suite[i].Status.Status{
+			//case "PASS":
+			//	jl.Status=1
+			//case "FAIL":
+			//	jl.Status = 0
+			//default:
+			//	jl.Status = 2
+			//}
+
+
+
+	}
+	for h := 0; h < len(detail.Statistics); h++{
+		//fmt.Println(robot.Statistics[h].Totals)
+		for st := 0; st < len(detail.Statistics[h].Totals);st++{
+			//fmt.Println(robot.Statistics[h].Totals[st].States)
+			for m :=0;m<len(detail.Statistics[h].Totals[st].States);m++{
+				fmt.Println(detail.Statistics[h].Totals[st].States[m].Stat)
+				if detail.Statistics[h].Totals[st].States[m].Stat == "All Tests"{
+					fmt.Println(detail.Statistics[h].Totals[st].States[m].Pass)
+					fmt.Println(detail.Statistics[h].Totals[st].States[m].Fail)
+					jl.PassNum,err = strconv.Atoi(detail.Statistics[h].Totals[st].States[m].Pass)
+					jl.FailNum,err = strconv.Atoi(detail.Statistics[h].Totals[st].States[m].Fail)
+					jl.ExeNum = jl.PassNum + jl.FailNum
+				}
+			}
+		}
+	}
+	jl.Source = "Jenkins"
+	if err := jl.Insert(); err != nil {
+		fmt.Println("Insert db error")
+	}
 
 }
-//c.CustomAbort(200,"Data received,we are parsing!")
 
 

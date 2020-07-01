@@ -138,174 +138,25 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        {{range $case:=$.Contents}}
                                         <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
+                                          <td>{{$case.JobName}}</td>
+                                          <td>{{$case.Status}}</td>
+                                          <td>{{$case.PassNum}}</td>
+                                          <td>{{$case.FailNum}}</td>
+                                          <td>{{$case.ExeNum}}</td>
+
+                                          <td>{{if $case.DebugPending }} {{$case.DebugPending}}{{else}} {{"empty"}} {{end}}</td>
+                                          <td>{{if $case.Tag }} {{$case.Tag}}{{else}} {{"empty"}} {{end}}</td>
+                                          <td>{{if $case.Source }} {{$case.Source}}{{else}} {{"empty"}} {{end}}</td>
+                                          <td>{{if $case.Comment }} {{$case.Comment}}{{else}} {{"empty"}} {{end}}</td>
+                                          <td>{{if $case.FinishedTime }} {{$case.FinishedTime}}{{else}} {{"empty"}} {{end}}</td>
+                                          <td>{{if $case.Owner }} {{$case.Owner}}{{else}} {{"empty"}} {{end}}</td>
+                                          <td>{{if $case.LogUrl }} {{$case.LogUrl}}{{else}} {{"empty"}} {{end}}</td>
+
+
                                         </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>Edinburgh</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Tiger Nixon</td>
-                                          <td>System Architect</td>
-                                          <td>test</td>
-                                          <td>61</td>
-                                          <td>2011/04/25</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                          <td>$320,800</td>
-                                          <td>System Architect</td>
-                                        </tr>
+                                        {{end}}
                                         </tbody>
                                       </table>
                                     </div>

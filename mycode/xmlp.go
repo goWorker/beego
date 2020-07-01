@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"regexp"
+	"strconv"
 	"time"
 )
 
@@ -36,7 +37,7 @@ type Stats struct{
 type Suite struct{
 	//XMLName		xml.Name	`xml:suite`
 	Suite	[]NextSuite 	`xml:"suite"`
-	Status 	[]SuiteStatus		`xml:"status"`
+	Status 	SuiteStatus		`xml:"status"`
 
 }
 
@@ -80,7 +81,22 @@ type AutoSummary struct {
 
 
 }
-
+type JobList struct{
+	Id 				int 		`orm:"pk;auto;size(11)" json:"id"`
+	JobName 		string		`orm:"size(100)" json:"jobName"`
+	ReleaseVersion	string 		`orm:"size(100)" json:"releaseVersion"`
+	Status			int			`orm:"size(10);default(2)" json:"status"`
+	PassNum			int			`orm:"size(10)" json:"passNum"`
+	FailNum			int			`orm:"size(10)" json:"failNum"`
+	ExeNum			int			`orm:"size(10)" json:"exeNum"`
+	DebugPending	string 		`orm:"size(100);null" json:"debugPending"`
+	Tag 			string		`orm:"size(100);null" json:"tag"`
+	Source 			string		`orm:"size(100);null" json:"source"`
+	Comment 		string		`orm:"size(100);null" json:"comment"`
+	Owner			string		`orm:"size(100);null" json:"owner"`
+	LogUrl			string		`orm:"size(100);null" json:"log_url"`
+	FinishedTime 	time.Time	`orm:"default(auto_now_add);type(datetime)" json:"finished_time"`
+}
 
 
 func ConvertTimeToSeconds(timestring string) int64{
@@ -90,7 +106,7 @@ func ConvertTimeToSeconds(timestring string) int64{
 	return tm2.Unix()
 }
 //func (at *AutoSummary)ConvertXML(urls string)
-func ConvertXML(urls string) {
+func ConvertXML(urls string) (){
 	resp, err := http.Get(urls)
 	if err != nil {
 		return
@@ -101,60 +117,67 @@ func ConvertXML(urls string) {
 	//	return
 	//}
 	byteValue, _ := ioutil.ReadAll(resp.Body)
+	var robot Robot
+	err=xml.Unmarshal(byteValue,&robot)
 	if err != nil {
 		return
 	}
+	jl := JobList{}
+	re,_:= regexp.Compile("http://172.25.153.50:8080/view/(.*)/job/(.*)/(.*)/robot/report/output.xml")
+	submatch := re.FindSubmatch([]byte(urls))
+	releasNO := string(submatch[1])
+	jobName := string(submatch[2])
+	jl.ReleaseVersion = releasNO
+	jl.JobName = jobName
 
-	var robot Robot
-	xml.Unmarshal(byteValue, &robot)
-	//fmt.Println(robot)
-	for j := 0; j < len(robot.Statistics); j++{
-		fmt.Println(robot.Statistics)
+	fmt.Println(robot.Generated)
+	jl.FinishedTime,err = time.Parse("2006-01-02T15:04:05.000Z",robot.Generated)
+	for i := 0; i <len(robot.Suite); i++{
+		fmt.Println(robot.Suite[i].Status)
+		//jl.Status = detail.Suite[i].Status.Status
+
+			switch robot.Suite[i].Status.Status{
+			case "PASS":
+				jl.Status=1
+			case "FAIL":
+				jl.Status = 0
+			default:
+				jl.Status = 2
+			}
+
+
+
 	}
-	//for i := 0; i < len(robot.Suite); i++ {
-	//	for suite := 0; suite < len(robot.Suite[i].Suite); suite++ {
-	//		for test := 0; test < len(robot.Suite[i].Suite[suite].Test); test++ {
-	//			//fmt.Println(robot.Suite[i].Suite[suite].Test[test].Name)
-	//			at.CaseName = robot.Suite[i].Suite[suite].Test[test].Name
-	//
-	//			//fmt.Println(robot.Suite[i].Suite[suite].Test[test].Tags)
-	//			for tag := 0; tag <len(robot.Suite[i].Suite[suite].Test[test].Tags);tag++{
-	//				casetagstr := strings.Replace(strings.Trim(fmt.Sprint(robot.Suite[i].Suite[suite].Test[test].Tags[tag].Tag), "[]"), " ", ",", -1)
-	//				fmt.Println(casetagstr)
-	//				at.CaseTag=robot.Suite[i].Suite[suite].Test[test].Tags[tag].Tag
-	//			}
-	//			for status := 0; status < len(robot.Suite[i].Suite[suite].Test[test].Status); status++ {
-	//				//fmt.Println(robot.Suite[i].Suite[suite].Test[test].Status[status].Status)
-	//				at.Status = robot.Suite[i].Suite[suite].Test[test].Status[status].Status
-	//				starttime := robot.Suite[i].Suite[suite].Test[test].Status[status].Starttime
-	//				endtime := robot.Suite[i].Suite[suite].Test[test].Status[status].Endtime
-	//				at.ExecuteTime = ConvertTimeToSeconds(endtime) - ConvertTimeToSeconds(starttime)
-	//
-	//			}
-	//
-	//		}
-	//
-	//	}
-	//
-	//	fmt.Println(at.CaseTag)
-	//	fmt.Println(at.CaseName)
-	//	fmt.Println(at.ExecuteTime)
-	//}
+	for h := 0; h < len(robot.Statistics); h++{
+		//fmt.Println(robot.Statistics[h].Totals)
+		for st := 0; st < len(robot.Statistics[h].Totals);st++{
+			//fmt.Println(robot.Statistics[h].Totals[st].States)
+			for m :=0;m<len(robot.Statistics[h].Totals[st].States);m++{
+				fmt.Println(robot.Statistics[h].Totals[st].States[m].Stat)
+				if robot.Statistics[h].Totals[st].States[m].Stat == "All Tests"{
+					fmt.Println(robot.Statistics[h].Totals[st].States[m].Pass)
+					fmt.Println(robot.Statistics[h].Totals[st].States[m].Fail)
+					jl.PassNum,err = strconv.Atoi(robot.Statistics[h].Totals[st].States[m].Pass)
+					jl.FailNum,err = strconv.Atoi(robot.Statistics[h].Totals[st].States[m].Fail)
+				}
+			}
+		}
+	}
+	fmt.Println(jl)
 }
 func main(){
 	//ConvertXML(url)
 	url := "http://172.25.153.50:8080/view/6.0.0/job/Felix_BasicAndSpring/60/robot/report/output.xml"
-	re,_:= regexp.Compile("http://172.25.153.50:8080/view/(.*)/job/(.*)/(.*)/robot/report/output.xml")
-
-	submatch := re.FindSubmatch([]byte(url))
-	//fmt.Println("FindSubmatch", submatch)
-	//for _, v := range submatch {
-	//	fmt.Println(string(v))
-	//}
-	releasNO := string(submatch[1])
-	jobName := string(submatch[2])
-	fmt.Println(releasNO)
-	fmt.Println(jobName)
+	//re,_:= regexp.Compile("http://172.25.153.50:8080/view/(.*)/job/(.*)/(.*)/robot/report/output.xml")
+	//
+	//submatch := re.FindSubmatch([]byte(url))
+	ConvertXML(url)
+	//releasNO := string(submatch[1])
+	//jobName := string(submatch[2])
+	//fmt.Println(releasNO)
+	//fmt.Println(jobName)
+	//at := AutoSummary{}
+	//at.ConvertXML(url)
 
 	////定义和上面的FindIndex一样
 	//submatchindex := re.FindSubmatchIndex([]byte(url))

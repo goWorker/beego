@@ -14,7 +14,7 @@ type Robot struct{
 	Statistics	[]Statistics	`xml:"statistics"`
 }
 type Statistics struct {
-	XMLName		xml.Name	`xml:"statistics"`
+	//XMLName		xml.Name	`xml:"statistics"`
 	Totals 	[]Total `xml:"total"`
 
 }
@@ -30,38 +30,39 @@ type Stats struct{
 
 type Suite struct{
 	//XMLName		xml.Name	`xml:suite`
-	Suite	[]NextSuite 	`xml:"suite"`
-	Status 	[]SuiteStatus		`xml:"status"`
+	//Suite	[]NextSuite 	`xml:"suite"`
+	Status 	SuiteStatus		`xml:"status"`
 
 }
 type SuiteStatus struct{
 	Status	string	`xml:"status,attr"`
 }
 
-type NextSuite struct{
-	//XMLName		xml.Name	`xml:suite`
-	Test 	[]Test	`xml:"test""`
-	//Name	string 	`xml:"name,attr"`
-}
-type Test struct {
-	//XMLName		xml.Name 	`xml:"test"`
-	Name 	string 	`xml:"name,attr"`
-	Status 	[]Status 	`xml:"status"`
-	Tags 	[]Tags 		`xml:"tags"`
-}
-type Tags struct {
-	Tag 	[]string 	`xml:"tag"`
-}
-type Status struct {
-	//XMLName		xml.Name 	`xml:"status"`
-	Status 	string 		`xml:"status,attr"`
-	Endtime 	string	`xml:"endtime,attr"`
-	Starttime 	string	`xml:"starttime,attr"`
-}
+//type NextSuite struct{
+//	//XMLName		xml.Name	`xml:suite`
+//	Test 	[]Test	`xml:"test""`
+//	//Name	string 	`xml:"name,attr"`
+//}
+//type Test struct {
+//	//XMLName		xml.Name 	`xml:"test"`
+//	Name 	string 	`xml:"name,attr"`
+//	Status 	[]Status 	`xml:"status"`
+//	Tags 	[]Tags 		`xml:"tags"`
+//}
+//type Tags struct {
+//	Tag 	[]string 	`xml:"tag"`
+//}
+//type Status struct {
+//	//XMLName		xml.Name 	`xml:"status"`
+//	Status 	string 		`xml:"status,attr"`
+//	Endtime 	string	`xml:"endtime,attr"`
+//	Starttime 	string	`xml:"starttime,attr"`
+//}
 
 func SwitchXMLToStruct(url string)(err error,result Robot) {
 	resp, err := http.Get(url)
 	if err != nil {
+		fmt.Printf("Got err: %v",err)
 		return
 	}
 	defer resp.Body.Close()
@@ -72,8 +73,10 @@ func SwitchXMLToStruct(url string)(err error,result Robot) {
 	var robot Robot
 	err=xml.Unmarshal(byteValue,&robot)
 	if err != nil{
+		fmt.Println(err)
 		return
 	}
 	fmt.Println(robot)
 	return err,robot
+
 }
