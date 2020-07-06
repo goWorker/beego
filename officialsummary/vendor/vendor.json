@@ -1,0 +1,121 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "m/b1xtKJhH9V4kK7BLeEBbctl18=",
+			"path": "github.com/astaxie/beego",
+			"revision": "0cd80525e7e34d7f36965341184afda083567153",
+			"revisionTime": "2020-02-07T08:25:41Z"
+		},
+		{
+			"checksumSHA1": "JvDySyr+rfWQ9sp+ciwxxWywea0=",
+			"path": "github.com/astaxie/beego/config",
+			"revision": "0cd80525e7e34d7f36965341184afda083567153",
+			"revisionTime": "2020-02-07T08:25:41Z"
+		},
+		{
+			"checksumSHA1": "PcZjaOpsROkM/vD9ALfb7yvIXoY=",
+			"path": "github.com/astaxie/beego/context",
+			"revision": "0cd80525e7e34d7f36965341184afda083567153",
+			"revisionTime": "2020-02-07T08:25:41Z"
+		},
+		{
+			"checksumSHA1": "iHY0XMPlj5EfCxMN4NEmvBgdhDM=",
+			"path": "github.com/astaxie/beego/context/param",
+			"revision": "0cd80525e7e34d7f36965341184afda083567153",
+			"revisionTime": "2020-02-07T08:25:41Z"
+		},
+		{
+			"checksumSHA1": "aeI6M/RKe0/MteZcG8Vxgb6oYBM=",
+			"path": "github.com/astaxie/beego/grace",
+			"revision": "0cd80525e7e34d7f36965341184afda083567153",
+			"revisionTime": "2020-02-07T08:25:41Z"
+		},
+		{
+			"checksumSHA1": "vhI3tzO5WLWc6ZHmjxR00g5nkPU=",
+			"path": "github.com/astaxie/beego/logs",
+			"revision": "0cd80525e7e34d7f36965341184afda083567153",
+			"revisionTime": "2020-02-07T08:25:41Z"
+		},
+		{
+			"checksumSHA1": "dotuIyVY6qn7rkb/wfXvZWb0IzM=",
+			"path": "github.com/astaxie/beego/session",
+			"revision": "0cd80525e7e34d7f36965341184afda083567153",
+			"revisionTime": "2020-02-07T08:25:41Z"
+		},
+		{
+			"checksumSHA1": "4V2lcWrKr5ApCVga1sHFxgFzUsM=",
+			"path": "github.com/astaxie/beego/toolbox",
+			"revision": "0cd80525e7e34d7f36965341184afda083567153",
+			"revisionTime": "2020-02-07T08:25:41Z"
+		},
+		{
+			"checksumSHA1": "cWeorVpPWrPi+E7qSj6i3GN93og=",
+			"path": "github.com/astaxie/beego/utils",
+			"revision": "0cd80525e7e34d7f36965341184afda083567153",
+			"revisionTime": "2020-02-07T08:25:41Z"
+		},
+		{
+			"checksumSHA1": "ko/QB5+41znvSqhvTLCoMwMkGAs=",
+			"path": "github.com/go-sql-driver/mysql",
+			"revision": "12508c83901b1a418e3dea51850f956f32506f4e",
+			"revisionTime": "2020-05-31T10:04:19Z"
+		},
+		{
+			"checksumSHA1": "v5CCEZdC63TIkIL8TUeURBcZzNc=",
+			"path": "github.com/shiena/ansicolor",
+			"revision": "a422bbe96644373c5753384a59d678f7d261ff10",
+			"revisionTime": "2015-11-19T15:19:21Z"
+		},
+		{
+			"checksumSHA1": "+uOXIIpJgxkYOhDM5m7Q7G3+SZk=",
+			"path": "golang.org/x/crypto/acme",
+			"revision": "75b288015ac94e66e3d6715fb68a9b41bf046ec2",
+			"revisionTime": "2020-06-22T20:02:02Z"
+		},
+		{
+			"checksumSHA1": "aDAIGbVOJXGY6JQPvi+6jPFhejk=",
+			"path": "golang.org/x/crypto/acme/autocert",
+			"revision": "75b288015ac94e66e3d6715fb68a9b41bf046ec2",
+			"revisionTime": "2020-06-22T20:02:02Z"
+		},
+		{
+			"checksumSHA1": "hcdWyC1u/0QHkpWYuhmJU4wpFCY=",
+			"path": "golang.org/x/net/idna",
+			"revision": "4c5254603344ea4a8ae4bed7e296a9588303e14f",
+			"revisionTime": "2020-06-24T15:59:55Z"
+		},
+		{
+			"checksumSHA1": "CbpjEkkOeh0fdM/V8xKDdI0AA88=",
+			"path": "golang.org/x/text/secure/bidirule",
+			"revision": "23ae387dee1f90d29a23c0e87ee0b46038fbed0e",
+			"revisionTime": "2020-06-11T18:50:30Z"
+		},
+		{
+			"checksumSHA1": "cyTndUcU5NwdZciSFzbtKQsRLQA=",
+			"path": "golang.org/x/text/transform",
+			"revision": "23ae387dee1f90d29a23c0e87ee0b46038fbed0e",
+			"revisionTime": "2020-06-11T18:50:30Z"
+		},
+		{
+			"checksumSHA1": "CMJzFJbSAV4MHzd8FC818PflSgk=",
+			"path": "golang.org/x/text/unicode/bidi",
+			"revision": "23ae387dee1f90d29a23c0e87ee0b46038fbed0e",
+			"revisionTime": "2020-06-11T18:50:30Z"
+		},
+		{
+			"checksumSHA1": "eTvVCF1qJTPYUphbo7NpQ7kXzPE=",
+			"path": "golang.org/x/text/unicode/norm",
+			"revision": "23ae387dee1f90d29a23c0e87ee0b46038fbed0e",
+			"revisionTime": "2020-06-11T18:50:30Z"
+		},
+		{
+			"checksumSHA1": "wZxi5gt6Zfs4vh8795dNA/lva7g=",
+			"path": "gopkg.in/yaml.v2",
+			"revision": "0b1645d91e851e735d3e23330303ce81f70adbe3",
+			"revisionTime": "2020-05-06T23:08:38Z"
+		}
+	],
+	"rootPath": "officialsummary"
+}

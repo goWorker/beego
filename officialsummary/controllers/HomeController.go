@@ -44,7 +44,12 @@ func (c *HomeController) ReceiveDataFromJenkins() {
 		fmt.Println(err)
 		return
 	}
+	//response :=
+	//response.Message = "ok"
 	c.Ctx.ResponseWriter.WriteHeader(200)
+	c.Ctx.ResponseWriter.Status = 200
+	c.Ctx.WriteString("OK!\n")
+
 	//c.Data["Message"] = "We are getting the "
 	//c.TplName = "index.html"
 	//fmt.Println(detail)
