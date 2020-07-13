@@ -1,8 +1,8 @@
 package router
 
 import (
-	"apiFramework/handler/sd"
-	"apiFramework/router/middleware"
+	"apiserver/handler/sd"
+	"apiserver/router/middleware"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
