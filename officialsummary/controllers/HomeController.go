@@ -20,22 +20,31 @@ type HomeController struct {
 
 func (c *HomeController) Index() {
 
-	//pageIndex, _ := c.GetInt("p", 1)
-	//private, _ := c.GetInt("private", 1)
 	table,err:= new(models.JobList).HomeData()
 	if err!=nil{
 		logs.Error("HomeController.Index => ", err)
 		c.Abort("404")
 	}
-	//if totalCount > 0{
-	//	c.Data["paginator"]=utils.NewPaginator(c.Ctx.Request,common.PageSize,totalCount)
-	//}else{
-	//	c.Data["paginator"]=""
-	//}
 	c.Data["Contents"]=table
 		c.TplName = "index.html"
 
 }
+//func (c *HomeController) SummaryForVersion() {
+//
+//	path := c.Ctx.Input.Param(":id")
+//	var s string = "'"
+//	path = fmt.Sprintf("%s%s%s",s,path,s)
+//	fmt.Println(path)
+//	table,err:= new(models.JobList).SummaryForVersionData(path)
+//	if err!=nil{
+//		logs.Error("HomeController.SummaryForVersion => ", err)
+//		c.Abort("404")
+//	}
+//	c.Data["Contents"]=table
+//	c.TplName = "600.html"
+//
+//}
+
 func (c *HomeController) ReceiveDataFromJenkins() {
 	url:=c.GetString("url")
 	fmt.Println(url)
@@ -44,15 +53,11 @@ func (c *HomeController) ReceiveDataFromJenkins() {
 		fmt.Println(err)
 		return
 	}
-	//response :=
-	//response.Message = "ok"
+
 	c.Ctx.ResponseWriter.WriteHeader(200)
 	c.Ctx.ResponseWriter.Status = 200
-	c.Ctx.WriteString("OK!\n")
+	c.Ctx.WriteString("Parse URL OK!\n")
 
-	//c.Data["Message"] = "We are getting the "
-	//c.TplName = "index.html"
-	//fmt.Println(detail)
 	jl := models.NewJobList()
 	re,_:= regexp.Compile("http://172.25.153.50:8080/view/(.*)/job/(.*)/(.*)/robot/report/output.xml")
 	submatch := re.FindSubmatch([]byte(url))
@@ -101,7 +106,9 @@ func (c *HomeController) ReceiveDataFromJenkins() {
 	}
 	jl.Source = "Jenkins"
 	if err := jl.Insert(); err != nil {
-		fmt.Println("Insert db error")
+		fmt.Println(err)
+		c.Ctx.ResponseWriter.Status = 400
+		c.Ctx.WriteString("Insert DB error")
 	}
 
 }

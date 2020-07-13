@@ -26,7 +26,6 @@ func (m *JobList) TableName() string {
 	return TNjobList()
 }
 
-
 func NewJobList() *JobList {
 	return &JobList{}
 }
@@ -35,6 +34,7 @@ func (m *JobList) HomeData(fields ...string) (joblist []JobList, err error) {
 		fields = append(fields, "id", "job_name", "release_version", "status", "pass_num","fail_num","exe_num","debug_pending","tag","source","comment","owner","log_url","finished_time")
 	}
 	//sqlFmt := "select id,job_name,release_version,status,pass_num, fail_num,exe_num,debug_pending,tag,source,comment,owner,log_url,finished_time from " + TNjobList()
+
 	sqlFmt := "SELECT a.* FROM "+ TNjobList()+" a,( SELECT job_name, release_version, MAX( finished_time ) ftime FROM jobList GROUP BY job_name, release_version ) b WHERE a.job_name = b.job_name AND a.release_version = b.release_version AND a.finished_time = b.ftime AND a.release_version = '6.1.0'"
 	sqlCount := "select count(*) cnt from "+TNjobList()
 	fmt.Println(sqlFmt)
@@ -43,15 +43,26 @@ func (m *JobList) HomeData(fields ...string) (joblist []JobList, err error) {
 	var params []orm.Params
 	if _, err := o.Raw(sqlCount).Values(&params); err == nil {
 		_, err = o.Raw(sqlFmt).QueryRows(&joblist)
-		//if len(params) > 0 {
-		//	totalCount, _ = strconv.Atoi(params[0]["cnt"].(string))
-		//	fmt.Println(totalCount)
-		//}
+
 	}
 
-	//if totalCount > 0 {
-	//	_, err = o.Raw(sqlFmt).QueryRows(&joblist)
-	//}
+	return
+}
+
+func (m *JobList)SummaryForVersionData(version string) (joblist []JobList, err error) {
+
+	sqlFmt := "SELECT a.* FROM "+ TNjobList()+" a,( SELECT job_name, release_version, MAX( finished_time ) ftime FROM jobList GROUP BY job_name, release_version ) b WHERE a.job_name = b.job_name AND a.release_version = b.release_version AND a.finished_time = b.ftime AND a.release_version = " + version
+	sqlCount := "select count(*) cnt from "+TNjobList()
+	fmt.Println(sqlFmt)
+	//fmt.Println(sqlCount)
+	o := orm.NewOrm()
+	var params []orm.Params
+
+	if _, err := o.Raw(sqlCount).Values(&params); err == nil {
+		_, err = o.Raw(sqlFmt).QueryRows(&joblist)
+
+	}
+
 	return
 }
 

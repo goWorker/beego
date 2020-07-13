@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	beego.SetStaticPath("/static", "./static")
 	beego.Run()
 }
 
