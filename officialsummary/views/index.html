@@ -1,90 +1,18 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Zivi - Admin Dashboard Template</title>
-  <!-- General CSS Files -->
-  <link rel="stylesheet" href="static/assets/css/app.min.css">
-  <!-- Template CSS -->
-  <link rel="stylesheet" href="static/assets/bundles/datatables/datatables.min.css">
-  <link rel="stylesheet" href="static/assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="static/assets/css/style.css">
-  <link rel="stylesheet" href="static/assets/css/components.css">
-  <!-- Custom style CSS -->
-  <link rel="stylesheet" href="static/assets/css/custom.css">
-  <link rel='shortcut icon' type='image/x-icon' href='static/assets/img/favicon.ico' />
-</head>
+{{ template "block/head.html" . }}
 
 <body>
   <div class="loader"></div>
   <div id="app">
     <div class="main-wrapper main-wrapper-1">
       <div class="navbar-bg"></div>
-      <nav class="navbar navbar-expand-lg main-navbar sticky">
-        <div class="form-inline mr-auto">
-          <ul class="navbar-nav mr-3">
-            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
-									collapse-btn"> <i data-feather="align-justify"></i></a></li>
-            <li><a href="#" class="nav-link nav-link-lg fullscreen-btn">
-                <i data-feather="maximize"></i>
-              </a></li>
-            <li>
-              <form class="form-inline mr-auto">
-                <div class="search-element">
-                  <input class="form-control" type="search" placeholder="Search" aria-label="Search" data-width="200">
-                  <button class="btn" type="submit">
-                    <i class="fas fa-search"></i>
-                  </button>
-                </div>
-              </form>
-            </li>
-          </ul>
-        </div>
-
-      </nav>
+      {{ template "block/nav.html" . }}
 
       <!-- Main Content -->
-      <div class="main-sidebar sidebar-style-2">
-        <aside id="sidebar-wrapper">
-          <div class="sidebar-brand">
-            <a href="index.html"> <img alt="image" src="static/assets/img/logo.png" class="header-logo" /> <span
-                      class="logo-name">NorthStar</span>
-            </a>
-          </div>
-          <div class="sidebar-user">
-            <div class="sidebar-user-picture">
-              <img alt="image" src="static/assets/img/user.png">
-            </div>
-            <div class="sidebar-user-details">
-              <div class="user-name">Sarah Smith</div>
-              <div class="user-role">Administrator</div>
-            </div>
-          </div>
-          <ul class="sidebar-menu">
-            <li class="menu-header">Main</li>
-            <li class="dropdown active">
-              <a href="#"><i
-                        data-feather="monitor"></i><span>All Tasks</span></a>
+      {{ template "block/leftbar.html" . }}
 
-            </li>
-            <li class="dropdown">
-              <a href="summary"><i
-                        data-feather="briefcase"></i><span>Summary</span></a>
-
-            </li>
-            <li class="dropdown">
-              <a href="jira"><i data-feather="command"></i><span>JIRA</span></a>
-            </li>
-            <li class="dropdown">
-              <a href="note"><i data-feather="mail"></i><span>Note</span></a>
-
-            </li>
-
-          </ul>
-        </aside>
-      </div>
       <div class="main-content">
         <section class="section">
 
@@ -96,14 +24,13 @@
                     <h4>All Tasks</h4>
                   </div>
                   <div class="card-body">
-                    <ul class="nav nav-pills" id="myTab3" role="tablist">
+                    <ul class="nav nav-pills" name="6.1.0" id="myTab3" role="tablist">
                       <li class="nav-item">
-                        <a class="nav-link active" id="home-tab3" data-toggle="tab" href="#home3" role="tab"
-                           aria-controls="home" aria-selected="true">610</a>
+                        <a class="nav-link active" id="6.1.0" name="6.1.0" href="/index"
+                            aria-selected="true">6.1.0</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" id="profile-tab3" data-toggle="tab" href="#profile3" role="tab"
-                           aria-controls="profile" aria-selected="false">611</a>
+                        <a class="nav-link" id="profile-tab3"  href="/summary/6.0.0" aria-selected="false">6.0.0</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link" id="contact-tab3" data-toggle="tab" href="#contact3" role="tab"
@@ -111,7 +38,7 @@
                       </li>
                     </ul>
                     <div class="tab-content" id="myTabContent2">
-                      <div class="tab-pane fade show active" id="home3" role="tabpanel" aria-labelledby="home-tab3">
+                      <div class="tab-pane fade show active" id="6.1.0" role="tabpanel" aria-labelledby="home-tab3">
                         <section class="section">
 
                           <div class="section-body">
@@ -167,10 +94,61 @@
                           </div>
                         </section>
                       </div>
-                      <div class="tab-pane fade" id="profile3" role="tabpanel" aria-labelledby="profile-tab3">
-                        Sed sed metus vel lacus hendrerit tempus. Sed efficitur velit tortor, ac efficitur est lobortis
-                        quis. Nullam lacinia metus erat, sed fermentum justo rutrum ultrices. Proin quis iaculis tellus.
-                        Etiam ac vehicula eros, pharetra consectetur dui.
+                      <div class="tab-pane fade" id="6.0.0" role="tabpanel" aria-labelledby="profile-tab3">
+                        <section class="section">
+
+                          <div class="section-body">
+                            <div class="row">
+                              <div class="col-12">
+                                <div class="card">
+                                  <div class="card-body">
+                                    <div class="table-responsive">
+                                      <table  class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                        <thead>
+                                        <tr>
+                                          <th>Job Name</th>
+                                          <th>Status</th>
+                                          <th>PASS#</th>
+                                          <th>FAIL#</th>
+                                          <th>EXE#</th>
+                                          <th>Debug Pending</th>
+                                          <th>Source</th>
+                                          <th>Tag</th>
+                                          <th>Comment</th>
+                                          <th>Last Update</th>
+                                          <th>Owner</th>
+                                          <th>Log URL</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {{range $case:=$.Contents}}
+                                          <tr>
+                                            <td>{{$case.JobName}}</td>
+                                            <td>{{$case.Status}}</td>
+                                            <td>{{$case.PassNum}}</td>
+                                            <td>{{$case.FailNum}}</td>
+                                            <td>{{$case.ExeNum}}</td>
+
+                                            <td>{{if $case.DebugPending }} {{$case.DebugPending}}{{else}} {{"empty"}} {{end}}</td>
+                                            <td>{{if $case.Source }} {{$case.Source}}{{else}} {{"empty"}} {{end}}</td>
+                                            <td>{{if $case.Tag }} {{$case.Tag}}{{else}} {{"empty"}} {{end}}</td>
+                                            <td>{{if $case.Comment }} {{$case.Comment}}{{else}} {{"empty"}} {{end}}</td>
+                                            <td>{{if $case.FinishedTime }} {{$case.FinishedTime}}{{else}} {{"empty"}} {{end}}</td>
+                                            <td>{{if $case.Owner }} {{$case.Owner}}{{else}} {{"empty"}} {{end}}</td>
+                                            <td>{{if $case.LogUrl }} {{$case.LogUrl}}{{else}} {{"empty"}} {{end}}</td>
+
+
+                                          </tr>
+                                        {{end}}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
                       </div>
                       <div class="tab-pane fade" id="contact3" role="tabpanel" aria-labelledby="contact-tab3">
                         Vestibulum imperdiet odio sed neque ultricies, ut dapibus mi maximus. Proin ligula massa,
@@ -178,6 +156,7 @@
                         molestie finibus, nulla diam varius leo, nec varius lectus elit id dolor.
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
