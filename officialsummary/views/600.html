@@ -24,20 +24,7 @@
                                     <h4>All Tasks</h4>
                                 </div>
                                 <div class="card-body">
-                                    <ul class="nav nav-pills" name="6.1.0" id="myTab3" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link " id="6.1.0" name="6.1.0" href="/index"
-                                                aria-selected="true">6.1.0</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="profile-tab3"  href="/summary/6.0.0"
-                                                aria-selected="false">6.0.0</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="contact-tab3" data-toggle="tab" href="#contact3" role="tab"
-                                               aria-controls="contact" aria-selected="false">620</a>
-                                        </li>
-                                    </ul>
+                                    {{ template "block/versiontab.html" .}}
                                     <div class="tab-content" id="myTabContent2">
                                         <div class="tab-pane fade show active" id="6.1.0" role="tabpanel" aria-labelledby="home-tab3">
                                             <section class="section">
@@ -69,7 +56,9 @@
                                                                             {{range $case:=$.Contents}}
                                                                                 <tr>
                                                                                     <td>{{$case.JobName}}</td>
-                                                                                    <td>{{$case.Status}}</td>
+                                                                                    <td>{{ if eq $case.Status "PASS" }} <div class="badge-success">{{$case.Status}}</div>{{else}}
+                                                                                            <div class="badge-danger">{{$case.Status}}</div>{{end}}
+                                                                                    </td>
                                                                                     <td>{{$case.PassNum}}</td>
                                                                                     <td>{{$case.FailNum}}</td>
                                                                                     <td>{{$case.ExeNum}}</td>
