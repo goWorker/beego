@@ -26,7 +26,7 @@ func (c *HomeController) Index() {
 		c.Abort("404")
 	}
 	c.Data["Contents"]=table
-		c.TplName = "index.html"
+		c.TplName = "jobsummary.html"
 
 }
 //func (c *HomeController) SummaryForVersion() {

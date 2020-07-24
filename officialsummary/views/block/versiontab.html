@@ -1,13 +1,9 @@
-<ul class="nav nav-pills" name="6.1.0" id="myTab3" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link" id="6.1.0" name="6.1.0" href="/index"
-           aria-selected="true">6.1.0</a>
-    </li>
-    <li class="nav-item ">
-        <a class="nav-link" id="6.0.0"  href="/summary/6.0.0" aria-selected="false">6.0.0</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="5.1.0" data-toggle="tab" href="#contact3" role="tab"
-           aria-controls="contact" aria-selected="false">5.1.0</a>
-    </li>
+<ul class="nav nav-pills" name="versionTab" id="versionTab" role="tablist">
+    {{range $v:= $.versionList}}
+        <li class="nav-item">
+            <a class="nav-link {{if eq $v $.version }}{{"active"}}{{else}} {{ $.version }}{{end}} "id="{{$v}}" name="{{$v}}" href="/summary/{{$v}}"
+               aria-selected="true"> {{$v}}</a>
+        </li>
+
+    {{end}}
 </ul>

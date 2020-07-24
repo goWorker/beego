@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"officialsummary/models"
+	"strings"
 )
 
 type SummaryVersionController struct {
@@ -15,7 +16,7 @@ type SummaryVersionController struct {
 func (this *SummaryVersionController) Get() {
 
 	pathurl := this.Ctx.Input.Param(":all")
-	var s string = "'"
+	var s string = ""
 	pathurl = fmt.Sprintf("%s%s%s",s,pathurl,s)
 	fmt.Println(pathurl)
 	table,err:= new(models.JobList).SummaryForVersionData(pathurl)
@@ -23,8 +24,13 @@ func (this *SummaryVersionController) Get() {
 		logs.Error("SummaryVersionController => ", err)
 		this.Abort("404")
 	}
+	ver := (beego.AppConfig.String("versionList"))
+	version := strings.Split(ver,"||")
+	fmt.Println(version)
 	this.Data["Contents"]=table
-	this.TplName = "600.html"
+	this.Data["version"] = pathurl
+	this.Data["versionList"] = version
+	this.TplName = "jobsummary.html"
 
 }
 
