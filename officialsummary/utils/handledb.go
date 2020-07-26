@@ -1,9 +1,11 @@
 package utils
 
 import (
+	"database/sql"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -79,4 +81,22 @@ func SwitchXMLToStruct(url string)(err error,result Robot) {
 	fmt.Println(robot)
 	return err,robot
 
+}
+var db *sql.DB
+
+func ModifyDB(sql string, args ...interface{}) (int64, error) {
+	fmt.Println(sql)
+	result, err := db.Exec(sql, args...)
+	if err != nil {
+		fmt.Println("first")
+		log.Println(err)
+		return 0, err
+	}
+	count, err := result.RowsAffected()
+	if err != nil {
+		fmt.Println("second")
+		log.Println(err)
+		return 0, err
+	}
+	return count, nil
 }

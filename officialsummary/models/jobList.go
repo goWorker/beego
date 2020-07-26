@@ -1,8 +1,10 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"officialsummary/utils"
 	"time"
 )
 
@@ -66,6 +68,52 @@ func (m *JobList)SummaryForVersionData(version string) (joblist []JobList, err e
 	return
 }
 
+func (m *JobList)SearchJob(version,id string) (joblist []JobList, err error) {
+
+	sqlFmt := "SELECT a.* FROM "+ TNjobList()+" a,( SELECT job_name, release_version, MAX( finished_time ) ftime FROM jobList GROUP BY job_name, release_version ) b WHERE a.job_name = b.job_name AND a.release_version = b.release_version AND a.finished_time = b.ftime AND a.release_version = '"+version+"' AND a.id = '"+id+"'"
+	sqlCount := "select count(*) cnt from "+TNjobList()
+	fmt.Println(sqlFmt)
+	//fmt.Println(sqlCount)
+	o := orm.NewOrm()
+	var params []orm.Params
+
+	if _, err := o.Raw(sqlCount).Values(&params); err == nil {
+		_, err = o.Raw(sqlFmt).QueryRows(&joblist)
+
+	}
+
+	return
+}
+func ModifyJob(joblist JobList) (int64, error) {
+
+	return utils.ModifyDB("update jobList set status=?,pass_num=?,fail_num=?,exe_num=? debug_pending=? tag=? comment=? owner=? log_url=? where id=?",
+		joblist.Status, joblist.PassNum,joblist.FailNum,joblist.ExeNum,joblist.DebugPending,joblist.Tag,joblist.Comment,joblist.Owner,joblist.LogUrl, joblist.Id)
+}
+
+func (joblist *JobList) InsertOrUpdate(cols ...string) (id int64, err error) {
+	o := orm.NewOrm()
+	id = int64(joblist.Id)
+
+	//m.DocumentName = strings.TrimSpace(m.DocumentName)
+
+	_, err = o.Update(joblist, cols...)
+	return
+
+}
+
+func (m *JobList) SelectByDocId(id int) (job *JobList, err error) {
+	if id <= 0 {
+		return m, errors.New("Invalid parameter")
+	}
+
+	o := orm.NewOrm()
+	err = o.QueryTable(m.TableName()).Filter("Id", id).One(m)
+	if err == orm.ErrNoRows {
+		return m, errors.New("数据不存在")
+	}
+
+	return m, nil
+}
 //func (m *JobList) HomeData(pageIndex, pageSize int,fields ...string) (joblist []JobList,totalCount int, err error) {
 //	if len(fields) == 0 {
 //		fields = append(fields, "id", "job_name", "release_version", "status", "pass_num","fail_num","exe_num","debug_pending","tag","source","comment","owner","log_url","finished_time")
