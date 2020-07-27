@@ -2,6 +2,7 @@ package main
 
 import (
 	"apiserver/config"
+	"apiserver/model"
 	"apiserver/router"
 	"errors"
 	"github.com/gin-gonic/gin"
@@ -23,7 +24,8 @@ func main() {
 		panic(err)
 	}
 	gin.SetMode(viper.GetString("runmode"))
-
+	model.DB.Init()
+	defer model.DB.Close()
 	g := gin.New()
 	middlewares := []gin.HandlerFunc{}
 	router.Load(
