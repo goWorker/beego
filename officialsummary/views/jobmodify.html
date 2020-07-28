@@ -19,7 +19,7 @@
                 <div class="section-body">
                     <div class="row">
                         <div class="col-12">
-                            <form action="http://127.0.0.1:8080/summary/6.1.0/edit/12" method="post">
+                            <form action="http://127.0.0.1:8080/summary/6.1.0/edit/7" method="post">
                                 <div class="card">
                                     <div class="card-header">
                                         <h4>Edit Job</h4>
@@ -35,7 +35,7 @@
                                             <div class="form-group">
 
                                                 <label >Job Name</label>
-                                                <input type="text" id="JobName" name="JobName" class="form-control" style="width: 50%" disabled=true value={{ $case.JobName }}  >
+                                                <input type="text" id="JobName" name="JobName" class="form-control" style="width: 50%" disabled="true" value={{ $case.JobName }}  >
                                                 <input type="text" id="Id" name="Id" class="form-control" style="width: 50%;display: none" hidden=true value={{ $case.Id }}  >
                                                 <input type="text" id="Releaseversion" name="Releaseversion" class="form-control" style="width: 50%;display: none" hidden=true value={{ $case.ReleaseVersion }}  >
                                             </div>
@@ -73,7 +73,7 @@
                                             <div class="form-group">
 
                                                 <label >Source</label>
-                                                <input type="text" id="Source" name="Source" class="form-control" style="width: 50%" disabled=true value={{ $case.Source }}  >
+                                                <input type="text" id="Source" name="Source" class="form-control" style="width: 50%" disabled="true" value={{ $case.Source }}  >
                                             </div>
                                             <div class="form-group">
 
@@ -88,7 +88,7 @@
                                             <div class="form-group">
 
                                                 <label >Last Update</label>
-                                                <input type="text" id="LastUpdate" name="LastUpdate" class="form-control" style="width: 50%"  disabled=true value={{ $case.FinishedTime }}  >
+                                                <input type="text" id="LastUpdate" name="LastUpdate" class="form-control" style="width: 50%" disabled="true" value={{ $case.FinishedTime }}  >
                                             </div>
                                             <div class="form-group">
 

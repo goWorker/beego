@@ -24,7 +24,7 @@ func TNjob2case() string {
 	return "job2case"
 }
 func TNjobList() string {
-	return "jobList"
+	return "joblist"
 }
 
 /*
