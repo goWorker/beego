@@ -67,11 +67,17 @@ func (c *HomeController) ReceiveDataFromJenkins() {
 	jl.JobName = jobName
 
 	fmt.Println(detail.Generated)
-	jl.FinishedTime,err = time.Parse("20060102 15:04:05.000",detail.Generated)
-	fmt.Println(time.Parse("2006-01-02T15:04:05.000Z",detail.Generated))
+	//here should write the location to conf
+	location, err := time.LoadLocation("America/New_York")
+	timeprune,err := time.Parse("20060102 15:04:05.000",detail.Generated)
 	if err != nil{
 		fmt.Println("Get finished time error")
 	}
+	jl.FinishedTime = timeprune.In(location)
+	fmt.Printf("The UTC Time is: %v",jl.FinishedTime)
+	//jl.FinishedTime,err = time.Parse("20060102 15:04:05.000",detail.Generated)
+	//fmt.Println(time.Parse("2006-01-02T15:04:05.000Z",detail.Generated))
+
 	for i := 0; i <len(detail.Suite); i++{
 		fmt.Println(detail.Suite[i].Status)
 		jl.Status=detail.Suite[i].Status.Status
