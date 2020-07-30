@@ -69,14 +69,13 @@ func (c *HomeController) ReceiveDataFromJenkins() {
 	fmt.Println(detail.Generated)
 	//here should write the location to conf
 	location, err := time.LoadLocation("America/New_York")
-	timeprune,err := time.Parse("20060102 15:04:05.000",detail.Generated)
+	timeprune,err := time.ParseInLocation("20060102 15:04:05",detail.Generated,location)
+	fmt.Printf("the local time is : %v\n",timeprune)
 	if err != nil{
 		fmt.Println("Get finished time error")
 	}
-	jl.FinishedTime = timeprune.In(location)
+	jl.FinishedTime = timeprune.In(time.UTC)
 	fmt.Printf("The UTC Time is: %v",jl.FinishedTime)
-	//jl.FinishedTime,err = time.Parse("20060102 15:04:05.000",detail.Generated)
-	//fmt.Println(time.Parse("2006-01-02T15:04:05.000Z",detail.Generated))
 
 	for i := 0; i <len(detail.Suite); i++{
 		fmt.Println(detail.Suite[i].Status)

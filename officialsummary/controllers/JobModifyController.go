@@ -41,6 +41,7 @@ func (this *JobModifyController) ModifyJob() {
 	fmt.Println("post id: ",id)
 	job,err := models.NewJobList().SelectByDocId(id)
 	release_version := this.GetString("Releaseversion")
+	fmt.Printf("last update time: %v\n",job.FinishedTime)
 	job.ReleaseVersion=release_version
 	jobname := this.GetString("JobName")
 	fmt.Println("this is jobname:",jobname)
@@ -81,9 +82,6 @@ func (this *JobModifyController) ModifyJob() {
 	}else {
 		this.Data["json"] = map[string]interface{}{"code": 1, "message": "更新成功"}
 	}
+	fmt.Printf("after update, the job is: %v\n",job)
 	this.ServeJSON()
-
-
-
-
 }

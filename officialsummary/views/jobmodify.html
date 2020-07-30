@@ -42,7 +42,8 @@
 
                                             <div class="form-group">
                                                 <label>Status</label>
-                                                <select class="form-control" id="Status" name="Status" class="form-control" style="width: 50%"  value={{ $case.Status }}>
+                                                <select class="form-control" id="Status" name="Status" class="form-control" style="width: 50%"  >
+                                                    <option selected>{{ $case.Status }}</option>
                                                     <option>PASS</option>
                                                     <option>FAIL</option>
                                                     <option>UNEXECUTE</option>
@@ -88,7 +89,7 @@
                                             <div class="form-group">
 
                                                 <label >Last Update</label>
-                                                <input type="text" id="LastUpdate" name="LastUpdate" class="form-control" style="width: 50%" disabled="true" value={{ $case.FinishedTime }}  >
+                                                <input type="text" id="LastUpdate" name="LastUpdate" class="form-control" style="width: 50%" disabled="true" value={{ $case.FinishedTime }} >
                                             </div>
                                             <div class="form-group">
 

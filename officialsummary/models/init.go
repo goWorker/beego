@@ -3,10 +3,13 @@ package models
 import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"time"
 )
 
 func init() {
+	orm.DefaultTimeLoc = time.UTC
 	orm.RegisterModel(
+
 		new(JobList),
 
 	)
