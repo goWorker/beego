@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 {{ template "block/head.html" . }}
 
@@ -19,17 +19,15 @@
                 <div class="section-body">
                     <div class="row">
                         <div class="col-12">
-                            <form action="http://127.0.0.1:8080/summary/6.1.0/edit/7" method="post">
+                            {{range $case:=$.Contents}}
+                            <form action="/summary/{{ $case.ReleaseVersion }}/edit/{{ $case.Id }}" method="post">
                                 <div class="card">
                                     <div class="card-header">
                                         <h4>Edit Job</h4>
                                     </div>
                                     <div class="card-body">
 
-                                        {{range $case:=$.Contents}}
 
-
-                                            {{/*                                            <label >Job Name</label>*/}}
 
 
                                             <div class="form-group">
@@ -104,14 +102,15 @@
                                         {{end}}
                                     </div>
                                     <div class="card-footer text-right">
-                                        <button class="btn btn-primary mr-1" type="submit">Submit</button>
+                                        <button class="btn btn-primary mr-1" type="submit" >Submit</button>
                                         <button class="btn btn-secondary" type="reset">Reset</button>
 
                                     </div>
                                 </div>
 
                             </form>
-                            </div>
+
+                        </div>
                         </div>
                     </div>
 {{/*                </div>*/}}
@@ -234,6 +233,7 @@
 <script src="/static/assets/js/scripts.js"></script>
 <!-- Custom JS File -->
 <script src="/static/assets/js/custom.js"></script>
+
 </body>
 
 </html>

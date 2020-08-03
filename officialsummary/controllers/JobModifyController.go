@@ -69,8 +69,6 @@ func (this *JobModifyController) ModifyJob() {
 	job.Tag = tag
 	comment := this.GetString("Comment")
 	job.Comment = comment
-
-	//lastupdate := this.GetString("LastUpdate")
 	owner := this.GetString("Owner")
 	job.Owner=owner
 	logurl := this.GetString("LogUrl")
@@ -83,5 +81,6 @@ func (this *JobModifyController) ModifyJob() {
 		this.Data["json"] = map[string]interface{}{"code": 1, "message": "更新成功"}
 	}
 	fmt.Printf("after update, the job is: %v\n",job)
-	this.ServeJSON()
+	//this.ServeJSON()
+	this.Redirect("/summary/"+job.ReleaseVersion+"",302)
 }
