@@ -115,29 +115,7 @@ func (m *JobList) SelectByDocId(id int) (job *JobList, err error) {
 
 	return m, nil
 }
-//func (m *JobList) HomeData(pageIndex, pageSize int,fields ...string) (joblist []JobList,totalCount int, err error) {
-//	if len(fields) == 0 {
-//		fields = append(fields, "id", "job_name", "release_version", "status", "pass_num","fail_num","exe_num","debug_pending","tag","source","comment","owner","log_url","finished_time")
-//	}
-//	//sqlFmt := "select id,job_name,release_version,status,pass_num, fail_num,exe_num,debug_pending,tag,source,comment,owner,log_url,finished_time from " + TNjobList()
-//	sqlFmt := "SELECT a.* FROM "+ TNjobList()+" a,( SELECT job_name, release_version, MAX( finished_time ) ftime FROM jobList GROUP BY job_name, release_version ) b WHERE a.job_name = b.job_name AND a.release_version = b.release_version AND a.finished_time = b.ftime AND a.release_version = '6.1.0'"
-//	sqlCount := "select count(*) cnt from "+TNjobList()
-//	fmt.Println(sqlFmt)
-//	fmt.Println(sqlCount)
-//	o := orm.NewOrm()
-//	var params []orm.Params
-//	if _, err := o.Raw(sqlCount).Values(&params); err == nil {
-//		if len(params) > 0 {
-//			totalCount, _ = strconv.Atoi(params[0]["cnt"].(string))
-//			fmt.Println(totalCount)
-//		}
-//	}
-//
-//	if totalCount > 0 {
-//		_, err = o.Raw(sqlFmt + " limit " + strconv.Itoa(pageSize) + " offset "+ strconv.Itoa((pageIndex-1)*pageSize)).QueryRows(&joblist)
-//	}
-//	return
-//}
+
 func (m *JobList) Select(field string, value interface{}, cols ...string) (joblist *JobList, err error) {
 	if len(cols) == 0 {
 		err = orm.NewOrm().QueryTable(m.TableName()).Filter(field, value).One(m)
@@ -181,4 +159,41 @@ func (m *JobList) Update(cols ...string) (err error) {
 	}
 	_, err = o.Update(m, cols...)
 	return err
+}
+//func (joblist *JobList)DeleteJob(version,jobname string){
+//	o := orm.NewOrm()
+//	o.Begin()
+//	_, err := o.Raw("delete from "+TNjobList() +" where release_version = "+ version +" and job_name = (select job_name from (select job_name from jobList where id="+id+") tt);").Exec()
+//
+//	if err != nil {
+//		o.Rollback()
+//	}else {
+//		o.Commit()
+//	}
+//}
+
+func (joblist *JobList)Delete(version,jobname string) error{
+	o := orm.NewOrm()
+	//modelStore := new(JobList)
+
+	//if doc, err := m.SelectByDocId(docId); err == nil {
+	//	o.Delete(doc)
+	//	modelStore.Delete(docId)
+	//}
+
+	var jobs []*JobList
+
+	_, err := o.QueryTable(joblist.TableName()).Filter("job_name",jobname).Filter("release_version",version ).All(&jobs)
+	if err != nil {
+		return err
+	}
+
+	for _, item := range jobs {
+		jobId := item.Id
+		o.QueryTable(joblist.TableName()).Filter("id", jobId).Delete()
+		////删除document_store表对应的文档
+		//modelStore.Delete(docId)
+		//m.Delete(docId)
+	}
+	return nil
 }
