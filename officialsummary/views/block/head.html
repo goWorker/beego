@@ -15,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script type="text/javascript">
-        function getlocaltime(utctimestr) {
+        function getlocaltime(utctimestr, id) {
             // console.log(utctimestr);
             var local_date= moment.utc(utctimestr).local().format('YYYY-MM-DD HH:mm:ss');
             console.log(local_date);
@@ -25,27 +25,16 @@
             console.log(end_date_format)
             seconds = moment(end_date,"YYYY-MM-DD HH:mm:ss").diff(moment(start_date,"YYYY-MM-DD HH:mm:ss"))
             console.log(seconds)
-            // if (seconds > 60*60*24*2) {
-            //     document.getElementById("finishtime")
-            //     // window.Element = function () {
-            //     //     document.getElementById("finishtime")[0].className='badge-danger'
-            //     //     document.getElementById("finishtime")[0].text = local_date
-            //     // }
-            // }
+            if (seconds > 1000*60*60*24*8) {
+//                document.getElementById("finishtime_"+id).className='badge-danger'
+                document.getElementById("finishtime_"+id).style.color='red'
+                document.getElementById("finishtime_"+id).style.fontWeight='bold'
+                document.getElementById("finishtime_"+id).style.fontSize='16px'
+
+
+            }
             return local_date;
         }
 
-        function returnTimeDiff(utctimestr){
-            start_date = utctimestr;
-            end_date = new Date();
-            end_date_format = moment.utc(end_date).format('YYYY-MM-DD HH:mm:ss')
-            // console.log(end_date_format)
-            seconds = moment(end_date,"YYYY-MM-DD HH:mm:ss").diff(moment(start_date,"YYYY-MM-DD HH:mm:ss"))
-            // console.log(seconds)
-            // if (seconds>60*60*24*2){
-            //     document.documentElement.className="badge-danger"
-            // }
-            return seconds
-        }
     </script>
 </head>
