@@ -35,6 +35,13 @@
             }
             return local_date;
         }
+        function getUTCTime(id){
+                var datetimeLocal = document.getElementById(id).value;
+                var datetimeUTC = moment.utc(datetimeLocal).format();
+                return datetimeUTC;
+
+        }
 
     </script>
+
 </head>

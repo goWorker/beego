@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+{{ template "block/head.html" . }}
+
+<body>
+<div class="loader"></div>
+<div id="app">
+    <div class="main-wrapper main-wrapper-1">
+        <div class="navbar-bg"></div>
+        {{ template "block/nav.html" . }}
+
+        <!-- Main Content -->
+        {{ template "block/leftbar.html" . }}
+
+        <div class="main-content">
+            <section class="section">
+
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <form action="/summary/add" method="post">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Add Job</h4>
+                                    </div>
+                                    <div class="card-body">
+
+
+
+
+                                            <div class="form-group">
+
+                                                <label >Job Name</label>
+                                                <input type="text" id="JobName" name="JobName" class="form-control" style="width: 50%" value="{{.JobName}}" >
+
+                                            </div>
+                                        <div class="form-group">
+                                            <label>Release Version</label>
+                                            <input type="text" id="Releaseversion" name="Releaseversion" class="form-control" style="width: 50%;"  value="{{.ReleaseVersion}}"  >
+                                        </div>
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control" id="Status" name="Status" class="form-control" style="width: 50%" value="{{.Status}}" >
+                                                    <option>PASS</option>
+                                                    <option>FAIL</option>
+                                                    <option>UNEXECUTE</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+
+                                                <label >PASS#</label>
+                                                <input type="text" id="PassNum" name="PassNum" class="form-control" style="width: 50%"  value="{{.PassNum}}" >
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label >FAIL#</label>
+                                                <input type="text" id="FailNum" name="FailNum" class="form-control" style="width: 50%"  value="{{.FailNum}}"  >
+                                            </div>
+                                            <div class="form-group">
+
+                                                <label >EXE#</label>
+                                                <input type="text" id="ExeNum" name="ExeNum" class="form-control" style="width: 50%"  value="{{.ExeNum}}"  >
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label >Debug Pending</label>
+                                                <input type="text" id="DebugPending" name="DebugPending" class="form-control" style="width: 50%"  value="{{.DebugPending}}"  >
+                                            </div>
+                                            <div class="form-group">
+
+                                                <label >Source</label>
+                                                <input type="text" id="Source" name="Source" class="form-control" style="width: 50%" disabled="true" value="Manual"  >
+                                            </div>
+                                            <div class="form-group">
+
+                                                <label >Tag</label>
+                                                <input type="text" id="Tag" name="Tag" class="form-control" style="width: 50%"  value="{{.Tag}}"  >
+                                            </div>
+                                            <div class="form-group">
+
+                                                <label >Comment</label>
+                                                <input type="text" id="Comment" name="Comment" class="form-control" style="width: 50%"  value="{{.Comment}}" >
+                                            </div>
+{{/*                                            <div class="form-group">*/}}
+
+{{/*                                                <label >Last Update</label>*/}}
+{{/*                                                <input type="text" id="LastUpdate" name="LastUpdate" class="form-control" style="width: 50%"  value='' >*/}}
+{{/*                                            </div>*/}}
+
+                                        <div class="form-group">
+                                            <label>Last Update</label>
+                                            <input type="datetime-local" id="LastUpdate" name="LastUpdate" class="form-control" style="width: 50%" value="{{.FinishedTime}}">
+                                            <input type="hidden" id="UTCDateTime" name="UTCDateTime" value="" >
+
+
+                                        </div>
+                                            <div class="form-group">
+
+                                                <label >Owner</label>
+                                                <input type="text" id="Owner" name="Owner" class="form-control" style="width: 50%"  value="{{.Owner}}"  >
+                                            </div>
+                                            <div class="form-group">
+
+                                                <label >Log URL</label>
+                                                <input type="text" id="LogUrl" name="LogUrl" class="form-control" style="width: 50%"  value="{{.LogUrl}}"  >
+                                            </div>
+
+                                    </div>
+                                    <div class="card-footer text-right">
+                                        <button class="btn btn-primary mr-1" type="submit" onclick="tijiao()"  >Submit</button>
+                                        <button class="btn btn-secondary" type="reset">Reset</button>
+
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        </div>
+                    </div>
+            </section>
+    </div>
+
+            {{ template "block/rightbar.html" . }}
+        <footer class="main-footer">
+            <div class="footer-left">
+                Copyright &copy; 2020 <div class="bullet"></div> Design By <a href="http://www.bootstrapmb.com/">Redstar</a>
+            </div>
+            <div class="footer-right">
+            </div>
+        </footer>
+    </div>
+</div>
+<!-- General JS Scripts -->
+<script src="/static/assets/js/app.min.js"></script>
+<script src="/static/assets/bundles/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="/static/assets/bundles/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="/static/assets/bundles/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="/static/assets/js/page/forms-advanced-forms.js"></script>
+
+
+
+
+<!-- JS Libraies -->
+<!-- Page Specific JS File -->
+{{/*<script src="/static/assets/bundles/datatables/datatables.min.js"></script>*/}}
+{{/*<script src="/static/assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>*/}}
+{{/*<script src="/static/assets/bundles/datatables/export-tables/dataTables.buttons.min.js"></script>*/}}
+{{/*<script src="/static/assets/bundles/datatables/export-tables/buttons.flash.min.js"></script>*/}}
+{{/*<script src="/static/assets/bundles/datatables/export-tables/jszip.min.js"></script>*/}}
+{{/*<script src="/static/assets/bundles/datatables/export-tables/pdfmake.min.js"></script>*/}}
+{{/*<script src="/static/assets/bundles/datatables/export-tables/vfs_fonts.js"></script>*/}}
+{{/*<script src="/static/assets/bundles/datatables/export-tables/buttons.print.min.js"></script>*/}}
+{{/*<script src="/static/assets/js/page/datatables.js"></script>*/}}
+
+    <!--日期选择插件-->
+<!-- Template JS File -->
+<script src="/static/assets/js/scripts.js"></script>
+<!-- Custom JS File -->
+<script src="/static/assets/js/custom.js"></script>
+<script language="JavaScript">
+    function tijiao(){
+        lastTime =$('#LastUpdate').val()
+        lastTimeObj=new Date(lastTime)
+        UTCString = lastTimeObj.getUTCFullYear()+"-"
+        UTCString =UTCString + (lastTimeObj.getUTCMonth()+ 1)+"-"
+        UTCString =UTCString +     lastTimeObj.getUTCDate()+" "
+        UTCString =UTCString +     lastTimeObj.getUTCHours()+":"
+        UTCString =UTCString +     lastTimeObj.getUTCMinutes()+":00"
+        // UTCString =UTCString +     "lastTimeObj.getUTCSeconds()"
+        UTCString2= dateFormat('YYYY-mm-dd HH:MM:SS', new Date(UTCString))
+        $('#UTCDateTime').val(UTCString2)
+
+        return true
+
+    }
+    function dateFormat(fmt, date) {
+        let ret;
+        const opt = {
+            "Y+": date.getFullYear().toString(),        // 年
+            "m+": (date.getMonth() + 1).toString(),     // 月
+            "d+": date.getDate().toString(),            // 日
+            "H+": date.getHours().toString(),           // 时
+            "M+": date.getMinutes().toString(),         // 分
+            "S+": date.getSeconds().toString()          // 秒
+            // 有其他格式化字符需求可以继续添加，必须转化成字符串
+        };
+        for (let k in opt) {
+            ret = new RegExp("(" + k + ")").exec(fmt);
+            if (ret) {
+                fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+            };
+        };
+        return fmt;
+    }
+</script>
+
+</body>
+
+</html>
