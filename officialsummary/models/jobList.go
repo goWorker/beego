@@ -85,6 +85,38 @@ func (m *JobList)SearchJob(version,id string) (joblist []JobList, err error) {
 
 	return
 }
+func (m *JobList)SearchHistoryJobDetail(Id string)(joblist []JobList, err error){
+	sqlFmt := "SELECT * FROM "+ TNjobList()+" where id =  '"+Id+"'"
+	sqlCount := "select count(*) cnt from "+TNjobList()
+	fmt.Println(sqlFmt)
+	//fmt.Println(sqlCount)
+	o := orm.NewOrm()
+	var params []orm.Params
+
+	if _, err := o.Raw(sqlCount).Values(&params); err == nil {
+		_, err = o.Raw(sqlFmt).QueryRows(&joblist)
+
+	}
+
+	return
+}
+func (m *JobList)SearchJobHistory(version,name string) (joblist []JobList, err error) {
+	//select * from jobList where release_version = "6.1.0" and job_name = "610Felix_SRBWsizingAndContainerLSP";
+	sqlFmt := "SELECT * FROM "+ TNjobList()+" where release_version =  '"+version+"'  and job_name = '"+name+"'"
+	sqlCount := "select count(*) cnt from "+TNjobList()
+	fmt.Println(sqlFmt)
+	//fmt.Println(sqlCount)
+	o := orm.NewOrm()
+	var params []orm.Params
+
+	if _, err := o.Raw(sqlCount).Values(&params); err == nil {
+		_, err = o.Raw(sqlFmt).QueryRows(&joblist)
+
+	}
+
+	return
+}
+
 func ModifyJob(joblist JobList) (int64, error) {
 
 	return utils.ModifyDB("update jobList set status=?,pass_num=?,fail_num=?,exe_num=? debug_pending=? tag=? comment=? owner=? log_url=? where id=?",
@@ -184,6 +216,32 @@ func (joblist *JobList)Delete(version,jobname string) error{
 	var jobs []*JobList
 
 	_, err := o.QueryTable(joblist.TableName()).Filter("job_name",jobname).Filter("release_version",version ).All(&jobs)
+	if err != nil {
+		return err
+	}
+
+	for _, item := range jobs {
+		jobId := item.Id
+		o.QueryTable(joblist.TableName()).Filter("id", jobId).Delete()
+		////删除document_store表对应的文档
+		//modelStore.Delete(docId)
+		//m.Delete(docId)
+	}
+	return nil
+}
+
+func (joblist *JobList)DeleteHisJob(id string) error{
+	o := orm.NewOrm()
+	//modelStore := new(JobList)
+
+	//if doc, err := m.SelectByDocId(docId); err == nil {
+	//	o.Delete(doc)
+	//	modelStore.Delete(docId)
+	//}
+
+	var jobs []*JobList
+
+	_, err := o.QueryTable(joblist.TableName()).Filter("id",id).All(&jobs)
 	if err != nil {
 		return err
 	}

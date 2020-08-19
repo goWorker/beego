@@ -24,7 +24,7 @@
                     <h4>All Tasks</h4>
                   </div>
                   <div class="card-body">
-                    {{ template "block/versiontab.html" .}}
+{{/*                    {{ template "block/versiontab.html" .}}*/}}
                     <div class="tab-content" id="myTabContent2">
                       <div class="tab-pane fade show active" id="jobTab" role="tabpanel" aria-labelledby="home-tab3">
                         <section class="section">
@@ -38,12 +38,13 @@
 
 {{/*                                      <div style="padding: 0 0 20px 20px;font-size:18px"><a style="padding: 5px;" href="/new/">New Version</a></div>*/}}
                                       <table  class="table table-striped table-hover" id="tableExport" style="width:100%;">
-                                        <div style="left: 90px">
-                                          <a class="btn btn-primary mr-1" href="/summary/add/">Add New Job</a>
-                                        </div>
+{{/*                                        <div style="left: 90px">*/}}
+{{/*                                          <a class="btn btn-primary mr-1" href="/summary/add/">Add New Job</a>*/}}
+{{/*                                        </div>*/}}
                                         <thead>
                                         <tr>
                                           <th>Job Name</th>
+                                          <th>Release Ver</th>
                                           <th>Status</th>
                                           <th>PASS#</th>
                                           <th>FAIL#</th>
@@ -64,7 +65,8 @@
                                         {{range $case:=$.Contents}}
 
                                         <tr>
-                                          <td><a target="_blank" href="/summary/{{$case.ReleaseVersion}}/history/{{$case.JobName}}">{{$case.JobName}}</a></td>
+                                          <td>{{$case.JobName}}</td>
+                                          <td>{{$case.ReleaseVersion}}</td>
                                           <td>{{ if eq $case.Status "PASS" }} <div class="badge-success">{{$case.Status}}</div>{{else}}
                                               <div class="badge-danger">{{$case.Status}}</div>{{end}}
                                           </td>
@@ -81,7 +83,7 @@
                                           <td id="finishtime_{{$case.Id}}">{{if $case.FinishedTime }} <script>document.write(getlocaltime("{{$case.FinishedTime}}","{{$case.Id}}"))</script>  {{else}} {{"empty"}} {{end}}</td>
                                           <td>{{if $case.Owner }} {{$case.Owner}}{{else}} {{"empty"}} {{end}}</td>
                                           <td>{{if $case.LogUrl }} {{$case.LogUrl}}{{else}} {{"empty"}} {{end}}</td>
-                                          <td><a href="/summary/{{$case.ReleaseVersion}}/edit/{{$case.Id}}">Edit</a>  <form  action="/summary/{{$case.ReleaseVersion}}/delete/{{$case.Id}}" method="post"><button type="submit" onclick="return confirm('Are you sure delete it？')" >Delete</button></form></td>
+                                          <td><a href="/summary/{{$case.ReleaseVersion}}/history/edit/{{$case.Id}}">Edit</a>  <form  action="/summary/{{$case.ReleaseVersion}}/history/delete/{{$case.Id}}" method="post"><button type="submit" onclick="return confirm('Are you sure delete it？')" >Delete</button></form></td>
 {{/*                                          href='javascript:if(confirm("Are you sure you want to delete？")){location="/summary/{{$case.ReleaseVersion}}/delete/{{$case.Id}}"}'*/}}
 
                                         </tr>
@@ -104,97 +106,7 @@
             </div>
           </div>
         </section>
-        <div class="settingSidebar">
-          <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
-          </a>
-          <div class="settingSidebar-body ps-container ps-theme-default">
-            <div class=" fade show active">
-              <div class="setting-panel-header">Setting Panel
-              </div>
-              <div class="p-15 border-bottom">
-                <h6 class="font-medium m-b-10">Select Layout</h6>
-                <div class="selectgroup layout-color w-50">
-                  <label class="selectgroup-item">
-                    <input type="radio" name="value" value="1" class="selectgroup-input-radio select-layout" checked>
-                    <span class="selectgroup-button">Light</span>
-                  </label>
-                  <label class="selectgroup-item">
-                    <input type="radio" name="value" value="2" class="selectgroup-input-radio select-layout">
-                    <span class="selectgroup-button">Dark</span>
-                  </label>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <h6 class="font-medium m-b-10">Sidebar Color</h6>
-                <div class="selectgroup selectgroup-pills sidebar-color">
-                  <label class="selectgroup-item">
-                    <input type="radio" name="icon-input" value="1" class="selectgroup-input select-sidebar">
-                    <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                      data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
-                  </label>
-                  <label class="selectgroup-item">
-                    <input type="radio" name="icon-input" value="2" class="selectgroup-input select-sidebar" checked>
-                    <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                      data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
-                  </label>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <h6 class="font-medium m-b-10">Color Theme</h6>
-                <div class="theme-setting-options">
-                  <ul class="choose-theme list-unstyled mb-0">
-                    <li title="white" class="active">
-                      <div class="white"></div>
-                    </li>
-                    <li title="cyan">
-                      <div class="cyan"></div>
-                    </li>
-                    <li title="black">
-                      <div class="black"></div>
-                    </li>
-                    <li title="purple">
-                      <div class="purple"></div>
-                    </li>
-                    <li title="orange">
-                      <div class="orange"></div>
-                    </li>
-                    <li title="green">
-                      <div class="green"></div>
-                    </li>
-                    <li title="red">
-                      <div class="red"></div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <div class="theme-setting-options">
-                  <label class="m-b-0">
-                    <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                      id="mini_sidebar_setting">
-                    <span class="custom-switch-indicator"></span>
-                    <span class="control-label p-l-10">Mini Sidebar</span>
-                  </label>
-                </div>
-              </div>
-              <div class="p-15 border-bottom">
-                <div class="theme-setting-options">
-                  <label class="m-b-0">
-                    <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input"
-                      id="sticky_header_setting">
-                    <span class="custom-switch-indicator"></span>
-                    <span class="control-label p-l-10">Sticky Header</span>
-                  </label>
-                </div>
-              </div>
-              <div class="mt-4 mb-4 p-3 align-center rt-sidebar-last-ele">
-                <a href="#" class="btn btn-icon icon-left btn-primary btn-restore-theme">
-                  <i class="fas fa-undo"></i> Restore Default
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+        {{ template "block/rightbar.html" . }}
       </div>
       <footer class="main-footer">
         <div class="footer-left">
