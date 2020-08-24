@@ -37,7 +37,7 @@ func (m *JobList) HomeData(fields ...string) (joblist []JobList, err error) {
 	}
 	//sqlFmt := "select id,job_name,release_version,status,pass_num, fail_num,exe_num,debug_pending,tag,source,comment,owner,log_url,finished_time from " + TNjobList()
 
-	sqlFmt := "SELECT a.* FROM "+ TNjobList()+" a,( SELECT job_name, release_version, MAX( finished_time ) ftime FROM jobList GROUP BY job_name, release_version ) b WHERE a.job_name = b.job_name AND a.release_version = b.release_version AND a.finished_time = b.ftime AND a.release_version = '6.1.0'"
+	sqlFmt := "SELECT a.* FROM "+ TNjobList()+" a,( SELECT job_name, release_version, MAX( finished_time ) ftime FROM joblist GROUP BY job_name, release_version ) b WHERE a.job_name = b.job_name AND a.release_version = b.release_version AND a.finished_time = b.ftime AND a.release_version = '6.1.0'"
 	sqlCount := "select count(*) cnt from "+TNjobList()
 	fmt.Println(sqlFmt)
 	//fmt.Println(sqlCount)
@@ -53,7 +53,7 @@ func (m *JobList) HomeData(fields ...string) (joblist []JobList, err error) {
 
 func (m *JobList)SummaryForVersionData(version string) (joblist []JobList, err error) {
 
-	sqlFmt := "SELECT a.* FROM "+ TNjobList()+" a,( SELECT job_name, release_version, MAX( finished_time ) ftime FROM jobList GROUP BY job_name, release_version ) b WHERE a.job_name = b.job_name AND a.release_version = b.release_version AND a.finished_time = b.ftime AND a.release_version = '"+version+"'"
+	sqlFmt := "SELECT a.* FROM "+ TNjobList()+" a,( SELECT job_name, release_version, MAX( finished_time ) ftime FROM joblist GROUP BY job_name, release_version ) b WHERE a.job_name = b.job_name AND a.release_version = b.release_version AND a.finished_time = b.ftime AND a.release_version = '"+version+"'"
 	sqlCount := "select count(*) cnt from "+TNjobList()
 	fmt.Println(sqlFmt)
 	//fmt.Println(sqlCount)
@@ -71,7 +71,7 @@ func (m *JobList)SummaryForVersionData(version string) (joblist []JobList, err e
 
 func (m *JobList)SearchJob(version,id string) (joblist []JobList, err error) {
 
-	sqlFmt := "SELECT a.* FROM "+ TNjobList()+" a,( SELECT job_name, release_version, MAX( finished_time ) ftime FROM jobList GROUP BY job_name, release_version ) b WHERE a.job_name = b.job_name AND a.release_version = b.release_version AND a.finished_time = b.ftime AND a.release_version = '"+version+"' AND a.id = '"+id+"'"
+	sqlFmt := "SELECT a.* FROM "+ TNjobList()+" a,( SELECT job_name, release_version, MAX( finished_time ) ftime FROM joblist GROUP BY job_name, release_version ) b WHERE a.job_name = b.job_name AND a.release_version = b.release_version AND a.finished_time = b.ftime AND a.release_version = '"+version+"' AND a.id = '"+id+"'"
 	sqlCount := "select count(*) cnt from "+TNjobList()
 	fmt.Println(sqlFmt)
 	//fmt.Println(sqlCount)
@@ -119,16 +119,13 @@ func (m *JobList)SearchJobHistory(version,name string) (joblist []JobList, err e
 
 func ModifyJob(joblist JobList) (int64, error) {
 
-	return utils.ModifyDB("update jobList set status=?,pass_num=?,fail_num=?,exe_num=? debug_pending=? tag=? comment=? owner=? log_url=? where id=?",
+	return utils.ModifyDB("update joblist set status=?,pass_num=?,fail_num=?,exe_num=? debug_pending=? tag=? comment=? owner=? log_url=? where id=?",
 		joblist.Status, joblist.PassNum,joblist.FailNum,joblist.ExeNum,joblist.DebugPending,joblist.Tag,joblist.Comment,joblist.Owner,joblist.LogUrl, joblist.Id)
 }
 
 func (joblist *JobList) InsertOrUpdate(cols ...string) (id int64, err error) {
 	o := orm.NewOrm()
 	id = int64(joblist.Id)
-
-	//m.DocumentName = strings.TrimSpace(m.DocumentName)
-
 	_, err = o.Update(joblist, cols...)
 	return
 
@@ -192,27 +189,9 @@ func (m *JobList) Update(cols ...string) (err error) {
 	_, err = o.Update(m, cols...)
 	return err
 }
-//func (joblist *JobList)DeleteJob(version,jobname string){
-//	o := orm.NewOrm()
-//	o.Begin()
-//	_, err := o.Raw("delete from "+TNjobList() +" where release_version = "+ version +" and job_name = (select job_name from (select job_name from jobList where id="+id+") tt);").Exec()
-//
-//	if err != nil {
-//		o.Rollback()
-//	}else {
-//		o.Commit()
-//	}
-//}
 
 func (joblist *JobList)Delete(version,jobname string) error{
 	o := orm.NewOrm()
-	//modelStore := new(JobList)
-
-	//if doc, err := m.SelectByDocId(docId); err == nil {
-	//	o.Delete(doc)
-	//	modelStore.Delete(docId)
-	//}
-
 	var jobs []*JobList
 
 	_, err := o.QueryTable(joblist.TableName()).Filter("job_name",jobname).Filter("release_version",version ).All(&jobs)
@@ -223,22 +202,12 @@ func (joblist *JobList)Delete(version,jobname string) error{
 	for _, item := range jobs {
 		jobId := item.Id
 		o.QueryTable(joblist.TableName()).Filter("id", jobId).Delete()
-		////删除document_store表对应的文档
-		//modelStore.Delete(docId)
-		//m.Delete(docId)
 	}
 	return nil
 }
 
 func (joblist *JobList)DeleteHisJob(id string) error{
 	o := orm.NewOrm()
-	//modelStore := new(JobList)
-
-	//if doc, err := m.SelectByDocId(docId); err == nil {
-	//	o.Delete(doc)
-	//	modelStore.Delete(docId)
-	//}
-
 	var jobs []*JobList
 
 	_, err := o.QueryTable(joblist.TableName()).Filter("id",id).All(&jobs)
@@ -249,9 +218,6 @@ func (joblist *JobList)DeleteHisJob(id string) error{
 	for _, item := range jobs {
 		jobId := item.Id
 		o.QueryTable(joblist.TableName()).Filter("id", jobId).Delete()
-		////删除document_store表对应的文档
-		//modelStore.Delete(docId)
-		//m.Delete(docId)
 	}
 	return nil
 }
