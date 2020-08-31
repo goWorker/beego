@@ -4,6 +4,7 @@ import (
 	"apiserver/config"
 	"apiserver/model"
 	"apiserver/router"
+	"apiserver/router/middleware"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/pflag"
@@ -23,14 +24,16 @@ func main() {
 	if err := config.Init(*cfg); err != nil {
 		panic(err)
 	}
-	gin.SetMode(viper.GetString("runmode"))
+
 	model.DB.Init()
 	defer model.DB.Close()
+	gin.SetMode(viper.GetString("runmode"))
 	g := gin.New()
-	middlewares := []gin.HandlerFunc{}
+	//middlewares := []gin.HandlerFunc{}
 	router.Load(
 		g,
-		middlewares...,
+		middleware.Logging(),
+		middleware.RequestId(),
 	)
 	go func() {
 		if err := pingServer(); err != nil {
