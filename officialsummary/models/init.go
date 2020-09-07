@@ -4,15 +4,18 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
 	"time"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func init() {
 	orm.DefaultTimeLoc = time.UTC
 	orm.RegisterModel(
-
+		new(JobInfoList),
 		new(JobList),
 
+
 	)
+	//orm.RunSyncdb("default", true, true)
 }
 
 /*
@@ -23,8 +26,8 @@ func TNcaseLog() string {
 	return "caseLog"
 }
 
-func TNjob2case() string {
-	return "job2case"
+func TNjobInfoList() string {
+	return "jobinfolist"
 }
 func TNjobList() string {
 	return "joblist"
