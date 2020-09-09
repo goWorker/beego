@@ -1,0 +1,9 @@
+<ul class="nav nav-pills" name="versionTab" id="versionTab" role="tablist">
+    {{range $v:= $.versionList}}
+        <li class="nav-item">
+            <a class="nav-link {{if eq $v $.version }}{{"active"}}{{else}} {{ $.version }}{{end}} "id="{{$v}}" name="{{$v}}" href="/category/{{$v}}"
+               aria-selected="true"> {{$v}}</a>
+        </li>
+
+    {{end}}
+</ul>

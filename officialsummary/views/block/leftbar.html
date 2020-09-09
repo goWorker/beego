@@ -1,3 +1,8 @@
+<html>
+<head>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
@@ -14,15 +19,15 @@
                 <div class="user-role">Administrator</div>
             </div>
         </div>
-        <ul class="sidebar-menu">
+        <ul class="sidebar-menu" id="left-menu">
             <li class="menu-header">Main</li>
-            <li class="dropdown active">
+            <li class="dropdown">
                 <a href="/summary/6.1.0"><i
                             data-feather="monitor"></i><span>All Tasks</span></a>
 
             </li>
             <li class="dropdown">
-                <a href="summary"><i
+                <a href="/category/6.1.0"><i
                             data-feather="briefcase"></i><span>Dashboard</span></a>
 
             </li>
@@ -37,3 +42,16 @@
         </ul>
     </aside>
 </div>
+</body>
+<script>
+    $(document).ready(function(){
+        $('li.dropdown').on('click',function(){
+            $('li.dropdown').removeClass('active')
+            $(this).addClass('active')
+
+        });
+    })
+
+</script>
+
+</html>

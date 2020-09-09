@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+{{ template "block/head.html" . }}
+
+<body>
+<div class="loader"></div>
+<div id="app">
+    <div class="main-wrapper main-wrapper-1">
+        <div class="navbar-bg"></div>
+        {{ template "block/nav.html" . }}
+
+        <!-- Main Content -->
+        {{ template "block/leftbar.html" . }}
+
+        <div class="main-content">
+            <section class="section">
+
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <form action="/category/add" method="post">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Add Category</h4>
+                                    </div>
+                                    <div class="card-body">
+
+
+
+
+                                            <div class="form-group">
+
+                                                <label >Category Name</label>
+                                                <input type="text" id="CateName" name="CateName" class="form-control" style="width: 50%" value="{{.ProjectName}}" >
+
+                                            </div>
+                                        <div class="form-group">
+                                            <label>Release Version</label>
+                                            <input type="text" id="Releaseversion" name="Releaseversion" class="form-control" style="width: 50%;"  value="{{.ReleaseVersion}}"  >
+                                        </div>
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="card-footer text-right">
+                                        <button class="btn btn-primary mr-1" type="submit" onclick="tijiao()"  >Submit</button>
+                                        <button class="btn btn-secondary" type="reset">Reset</button>
+
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        </div>
+                    </div>
+            </section>
+    </div>
+
+            {{ template "block/rightbar.html" . }}
+        <footer class="main-footer">
+            <div class="footer-left">
+                Copyright &copy; 2020 <div class="bullet"></div> Design By <a href="http://www.bootstrapmb.com/">Redstar</a>
+            </div>
+            <div class="footer-right">
+            </div>
+        </footer>
+    </div>
+</div>
+<!-- General JS Scripts -->
+<script src="/static/assets/js/app.min.js"></script>
+<script src="/static/assets/bundles/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="/static/assets/bundles/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="/static/assets/bundles/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="/static/assets/js/page/forms-advanced-forms.js"></script>
+
+
+    <!--日期选择插件-->
+<!-- Template JS File -->
+<script src="/static/assets/js/scripts.js"></script>
+<!-- Custom JS File -->
+<script src="/static/assets/js/custom.js"></script>
+<script language="JavaScript">
+    function tijiao(){
+        lastTime =$('#LastUpdate').val()
+        lastTimeObj=new Date(lastTime)
+        UTCString = lastTimeObj.getUTCFullYear()+"-"
+        UTCString =UTCString + (lastTimeObj.getUTCMonth()+ 1)+"-"
+        UTCString =UTCString +     lastTimeObj.getUTCDate()+" "
+        UTCString =UTCString +     lastTimeObj.getUTCHours()+":"
+        UTCString =UTCString +     lastTimeObj.getUTCMinutes()+":00"
+        // UTCString =UTCString +     "lastTimeObj.getUTCSeconds()"
+        UTCString2= dateFormat('YYYY-mm-dd HH:MM:SS', new Date(UTCString))
+        $('#UTCDateTime').val(UTCString2)
+
+        return true
+
+    }
+    function dateFormat(fmt, date) {
+        let ret;
+        const opt = {
+            "Y+": date.getFullYear().toString(),        // 年
+            "m+": (date.getMonth() + 1).toString(),     // 月
+            "d+": date.getDate().toString(),            // 日
+            "H+": date.getHours().toString(),           // 时
+            "M+": date.getMinutes().toString(),         // 分
+            "S+": date.getSeconds().toString()          // 秒
+            // 有其他格式化字符需求可以继续添加，必须转化成字符串
+        };
+        for (let k in opt) {
+            ret = new RegExp("(" + k + ")").exec(fmt);
+            if (ret) {
+                fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+            };
+        };
+        return fmt;
+    }
+</script>
+
+</body>
+
+</html>
