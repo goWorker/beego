@@ -19,7 +19,7 @@
                 <div class="section-body">
                     <div class="row">
                         <div class="col-12">
-                            <form action="/category/add" method="post">
+                            <form action="/category/{{$.version}}/add" method="post">
                                 <div class="card">
                                     <div class="card-header">
                                         <h4>Add Category</h4>
@@ -39,11 +39,13 @@
                                             <label>Release Version</label>
                                             <input type="text" id="Releaseversion" name="Releaseversion" class="form-control" style="width: 50%;"  value="{{.ReleaseVersion}}"  >
                                         </div>
+                                        {{range $case:=$.Contents}}
 
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                            <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
+                                            <input type="checkbox" class="custom-control-input" name="checkBox" value={{$case.JobName}} id={{$case.JobName}}>
+                                            <label class="custom-control-label" for={{$case.JobName}}>{{$case.JobName}}</label>
                                         </div>
+                                        {{end}}
 
                                     </div>
                                     <div class="card-footer text-right">

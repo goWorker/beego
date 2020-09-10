@@ -21,6 +21,9 @@ type JobCateSummList struct {
 	PassRatio     float32		`json:"pass_ratio"`
 	FailRatio     float32		`json:"fail_ratio"`
 }
+type JobNameList struct {
+	JobName		string		`json:"job_name"`
+}
 func (m *JobInfoList)TableName() string {
 	return TNjobInfoList()
 }
@@ -48,4 +51,13 @@ func (m *JobInfoList) Insert() (err error) {
 		return
 	}
 	return err
+}
+
+func (m *JobInfoList)QueryJob(version string)(jobnamelist []JobNameList,err error){
+	//sqlfmt := "select job_name from  "+TNjobList()+" where job_name not in(select job_name from "+TNjobInfoList()+");"
+	sqlfmt := "select distinct job_name from  "+TNjobList()+" where release_version='"+version+"' and job_name not in(select job_name from "+TNjobInfoList()+" where release_version='"+version+"');"
+	o := orm.NewOrm()
+	_,err = o.Raw(sqlfmt).QueryRows(&jobnamelist)
+	fmt.Println(jobnamelist)
+	return
 }
