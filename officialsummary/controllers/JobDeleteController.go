@@ -14,7 +14,6 @@ type JobDeleteController struct {
 }
 
 func (this *JobDeleteController) Delete(){
-	fmt.Println("test ***************************")
 	version := this.Ctx.Input.Param(":all")
 	fmt.Printf("version: ",version)
 	artID := this.Ctx.Input.Param(":id")
