@@ -59,7 +59,7 @@
                                       {{range $case:=$.Contents}}
 
                                         <tr>
-                                          <td>{{$case.ProjectName}}</td>
+                                          <td><a target="_blank" href="/category/{{$.version}}/{{$case.ProjectName}}">{{$case.ProjectName}}</a></td>
                                           <td>{{$case.TotalJob}}</td>
                                           <td>{{$case.Executed}}</td>
                                           <td>{{$case.Pass}}</td>

@@ -20,7 +20,7 @@ func (this *CategorySummController) Get() {
 	fmt.Println(pathurl)
 	table,err:= new(models.JobInfoList).CateForVersion(pathurl)
 	if err!=nil{
-		logs.Error("SummaryVersionController => ", err)
+		logs.Error("CategorySummController => ", err)
 		this.Abort("404")
 	}
 	ver := (beego.AppConfig.String("versionList"))

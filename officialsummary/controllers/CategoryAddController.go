@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego/orm"
 	"log"
 	"officialsummary/models"
 )
@@ -29,27 +30,25 @@ func (this *CategoryAddController) CategoryAddDis() {
 }
 
 func (this *CategoryAddController) CategoryAdd() {
-	//pathurl := this.Ctx.Input.Param(":id")
-	//fmt.Println(pathurl)
-	cate := models.NewJobInfoList()
+	cate := models.JobInfoList{}
 	catename := this.GetString("CateName")
 	log.Println(catename)
 	cate.ProjectName = catename
 	release_version := this.GetString("Releaseversion")
 	log.Printf(release_version)
 	cate.ReleaseVersion = release_version
-	//fmt.Printf("last update time: %v\n",job.FinishedTime)
     jobname := this.GetStrings("checkBox")
-    fmt.Println(jobname)
-	//this.Data["version"] = pathurl
-	if err := cate.Insert(); err != nil {
-		this.Data["json"] = map[string]interface{}{"code": 0, "message": "Insert data fail"}
-	} else {
-		this.Data["json"] = map[string]interface{}{"code": 1, "message": "Insert data success"}
+    cates:=make([]models.JobInfoList,len(jobname))
+	for i := 0; i < len(jobname); i++ {
+		cates = append(cates,models.JobInfoList{ProjectName: catename,ReleaseVersion: release_version,JobName: jobname[i]})
 	}
-	fmt.Printf("after update, the job is: %v\n", cate)
-	//this.ServeJSON()
+	fmt.Println(cates)
+	if num ,err := orm.NewOrm().InsertMulti(len(cates),cates);err !=nil{
+		fmt.Println(err)
+	}else {
+		fmt.Printf("Insert %d cate\r\n",num)
+	}
+	fmt.Printf("after update, the job is: %v\n", cates)
 	this.Redirect("/category/"+release_version+"", 302)
-
 
 }

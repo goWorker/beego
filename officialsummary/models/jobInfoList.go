@@ -24,6 +24,8 @@ type JobCateSummList struct {
 type JobNameList struct {
 	JobName		string		`json:"job_name"`
 }
+
+
 func (m *JobInfoList)TableName() string {
 	return TNjobInfoList()
 }
@@ -32,7 +34,7 @@ func NewJobInfoList() *JobInfoList {
 }
 func (m *JobInfoList)CateForVersion(version string) (jobcatesummlist []JobCateSummList, err error) {
 
-	sqlFmt := "SELECT t6.project_name as project_name,\n        t6.totalJob as total_job,\n        ifnull(t5.totalExe, 0) as executed,\n        ifnull(t5.totalPass, 0) as pass,\n        ifnull(t5.totalFail, 0) as fail,\n        ifnull(t5.totalExe, 0)/t6.totalJob as exe_ratio,\n        ifnull(t5.totalPass, 0)/t6.totalJob as pass_ratio,\n        ifnull(t5.totalFail, 0)/t6.totalJob as fail_ratio\n FROM (SELECT project_name,sum(exe_num) AS totalJob FROM jobinfolist a,\n                                                         (SELECT t1.job_name,t1.exe_num\n                                                          FROM jobList t1,\n                                                               (SELECT job_name, max(id) AS maxId FROM jobList WHERE release_version = '"+version+"' GROUP BY job_name) t2\n                                                          WHERE t1.id = t2.maxId) b\n       WHERE a.job_name = b.job_name GROUP BY project_name) t6\n          LEFT JOIN\n      (SELECT t4.project_name,sum(t3.exe_num) AS totalExe, sum(t3.pass_num) AS totalPass, sum(t3.fail_num) AS totalFail\n       FROM jobinfolist t4,\n            (SELECT t1.job_name,t1.exe_num,t1.pass_num,t1.fail_num FROM\n                                                                       jobList t1,\n                                                                       (SELECT job_name, max(id) AS maxId FROM jobList WHERE release_version = '"+version+"' AND DATE_FORMAT(finished_time, '%Y-%m-%d') >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY job_name) t2\n             WHERE t1.id = t2.maxId) t3\n       WHERE t4.job_name = t3.job_name  AND t4.release_version = '"+version+"' GROUP BY t4.project_name ) t5\n      ON t6.project_name = t5.project_name;"
+	sqlFmt := "SELECT t6.project_name as project_name,\n        t6.totalJob as total_job,\n        ifnull(t5.totalExe, 0) as executed,\n        ifnull(t5.totalPass, 0) as pass,\n        ifnull(t5.totalFail, 0) as fail,\n        ifnull(t5.totalExe, 0)/t6.totalJob as exe_ratio,\n        ifnull(t5.totalPass, 0)/t6.totalJob as pass_ratio,\n        ifnull(t5.totalFail, 0)/t6.totalJob as fail_ratio\n FROM (SELECT project_name,sum(exe_num) AS totalJob FROM "+TNjobInfoList()+" a,\n                                                         (SELECT t1.job_name,t1.exe_num\n                                                          FROM "+TNjobList()+" t1,\n                                                               (SELECT job_name, max(id) AS maxId FROM "+TNjobList()+" WHERE release_version = '"+version+"' GROUP BY job_name) t2\n                                                          WHERE t1.id = t2.maxId) b\n       WHERE a.job_name = b.job_name GROUP BY project_name) t6\n          LEFT JOIN\n      (SELECT t4.project_name,sum(t3.exe_num) AS totalExe, sum(t3.pass_num) AS totalPass, sum(t3.fail_num) AS totalFail\n       FROM jobinfolist t4,\n            (SELECT t1.job_name,t1.exe_num,t1.pass_num,t1.fail_num FROM\n                                                                       jobList t1,\n                                                                       (SELECT job_name, max(id) AS maxId FROM jobList WHERE release_version = '"+version+"' AND DATE_FORMAT(finished_time, '%Y-%m-%d') >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY job_name) t2\n             WHERE t1.id = t2.maxId) t3\n       WHERE t4.job_name = t3.job_name  AND t4.release_version = '"+version+"' GROUP BY t4.project_name ) t5\n      ON t6.project_name = t5.project_name;"
 	sqlCount := "select count(*) cnt from "+TNjobInfoList()
 	o := orm.NewOrm()
 	var params []orm.Params
@@ -59,5 +61,63 @@ func (m *JobInfoList)QueryJob(version string)(jobnamelist []JobNameList,err erro
 	o := orm.NewOrm()
 	_,err = o.Raw(sqlfmt).QueryRows(&jobnamelist)
 	fmt.Println(jobnamelist)
+	return
+}
+func (jobinfolist *JobInfoList)QueryUnSelectedJob(version string)(jobnamelist []JobNameList,err error){
+	sqlfmt := "select distinct job_name from  "+TNjobList()+" where release_version='"+version+"' and job_name not in(select job_name from "+TNjobInfoList()+" where release_version='"+version+"');"
+	o := orm.NewOrm()
+	_,err = o.Raw(sqlfmt).QueryRows(&jobnamelist)
+	fmt.Println(jobnamelist)
+	return
+}
+
+func (jobinfolist *JobInfoList)QuerySelectedJob(version,project_name string)(jobnamelist []JobNameList,err error){
+	sqlfmt := "select job_name from "+TNjobInfoList()+" where release_version='"+version+"' and project_name='"+project_name+"'"
+	o := orm.NewOrm()
+	_,err = o.Raw(sqlfmt).QueryRows(&jobnamelist)
+	fmt.Println(jobnamelist)
+	return
+}
+
+
+
+func (jobinfolist *JobInfoList)Delete(version,project_name string) error{
+	o := orm.NewOrm()
+	var jobs []*JobInfoList
+
+	_, err := o.QueryTable(jobinfolist.TableName()).Filter("project_name",project_name).Filter("release_version",version ).All(&jobs)
+	if err != nil {
+		return err
+	}
+	//for _, item := range jobs {
+	//	project_nameId := item.Id
+	//	o.QueryTable(jobinfolist.TableName()).Filter("id", project_nameId).Delete()
+	//}
+	//return nil
+	project_nameid := make([]int, len(jobs))
+	for _,item := range jobs{
+		project_nameid = append(project_nameid, item.Id)
+	}
+	_,err =o.QueryTable(new(JobInfoList)).Filter("id__in",project_nameid).Delete()
+	if err != nil{
+		fmt.Printf("delete User by Ids fail: [%v]\n", err)
+	}
+	fmt.Printf("Delete jobs by id successfully\n")
+	return nil
+}
+
+func (m *JobInfoList)CateJobDisplay(version,project_name string) (joblist []JobList, err error) {
+
+	sqlFmt := "SELECT\n    t1.job_name as job_name,\n    t1.status as status,\n       t1.pass_num as pass_num,\n       t1.fail_num as fail_num,\n       t1.exe_num as exe_num,\n       t1.debug_pending as debug_pending,\n      t1.tag as tag,\n  t1.source as source,\n       t1.comment as comment,\n       t1.owner as owner,\n       t1.log_url as log_url,\n       t1.finished_time as finished_time\nFROM\n    "+TNjobList()+" t1,\n    ( SELECT job_name, MAX( id ) maxId FROM "+TNjobList()+" GROUP BY job_name ) t2\nWHERE\n        t1.id = t2.maxId\n        and\n      t1.release_version='"+version+"'\n  AND t1.job_name IN ( SELECT job_name FROM "+TNjobInfoList()+" where project_name='"+project_name+"' )"
+	sqlCount := "select count(*) cnt from "+TNjobInfoList()
+	o := orm.NewOrm()
+	var params []orm.Params
+
+	if _, err := o.Raw(sqlCount).Values(&params); err == nil {
+		_,err = o.Raw(sqlFmt).QueryRows(&joblist)
+
+	}
+	fmt.Println(joblist)
+
 	return
 }
