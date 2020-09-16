@@ -26,9 +26,10 @@
                             data-feather="monitor"></i><span>All Tasks</span></a>
 
             </li>
+{{/*            <li class="dropdown {{if eq $.subBar "cate" }} active {{end}}">*/}}
             <li class="dropdown">
                 <a href="/category/6.1.0"><i
-                            data-feather="briefcase"></i><span>Dashboard</span></a>
+                            data-feather="briefcase"></i><span>Category</span></a>
 
             </li>
             <li class="dropdown">
@@ -43,15 +44,5 @@
     </aside>
 </div>
 </body>
-<script>
-    $(document).ready(function(){
-        $('li.dropdown').on('click',function(){
-            $('li.dropdown').removeClass('active')
-            $(this).addClass('active')
-
-        });
-    })
-
-</script>
 
 </html>

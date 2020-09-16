@@ -29,7 +29,9 @@ func (this *JobAddController) JobAddDis() {
 	//this.Data["Contents"]=table
 	//this.Data["version"] = pathurl
 	//this.Data["versionList"] = version
+
 	this.TplName = "jobadd.html"
+
 
 }
 

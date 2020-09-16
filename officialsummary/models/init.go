@@ -10,6 +10,7 @@ import (
 func init() {
 	orm.DefaultTimeLoc = time.UTC
 	orm.RegisterModel(
+		new(JobAggregateList),
 		new(JobInfoList),
 		new(JobList),
 
@@ -33,6 +34,9 @@ func TNjobList() string {
 	return "joblist"
 }
 
+func TNjobAggregateList() string{
+	return "jobaggregatelist"
+}
 /*
 * Tool Funcs
 * */

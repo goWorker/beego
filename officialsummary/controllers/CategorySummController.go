@@ -30,6 +30,7 @@ func (this *CategorySummController) Get() {
 	this.Data["Contents"]=table
 	this.Data["version"] = pathurl
 	this.Data["versionList"] = version
+	//this.Data["subBar"] = "cate"
 	this.TplName = "category/catesummary.html"
 
 }

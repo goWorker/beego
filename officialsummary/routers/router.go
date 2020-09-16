@@ -13,6 +13,8 @@ func init() {
 	beego.Router("/category/:id/add",&controllers.CategoryAddController{},"post:CategoryAdd")
 	beego.Router("/category/:id/:all",&controllers.CategoryJobDisplayController{},"get:CategoryJobDis")
 	beego.Router("/category/:all",&controllers.CategorySummController{})
+	beego.Router("/category/:id/history/",&controllers.CategoryHistoryController{}, "get:GetDir")
+	beego.Router("/category/:id/aggregate/",&controllers.CategoryAggController{}, "post:CategoryAggragate")
 	beego.Router("/category/:all/delete/:id",&controllers.CateDeleteController{},"post:Delete")
 	beego.Router("/category/:all/edit/:id",&controllers.CateEditController{},"get:GetCateDetail")
 	beego.Router("/category/:all/edit/:id",&controllers.CateEditController{},"post:CategoryEdit")

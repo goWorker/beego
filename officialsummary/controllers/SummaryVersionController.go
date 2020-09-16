@@ -30,6 +30,7 @@ func (this *SummaryVersionController) Get() {
 	this.Data["Contents"]=table
 	this.Data["version"] = pathurl
 	this.Data["versionList"] = version
+	this.Data["subBar"] = "summary"
 	this.TplName = "jobsummary.html"
 
 }

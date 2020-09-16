@@ -1,0 +1,61 @@
+<html>
+<head>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="/static/assets/css/app.min.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/static/assets/css/style.css">
+    <link rel="stylesheet" href="/static/assets/css/components.css">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="/static/assets/css/custom.css">
+    <link rel='shortcut icon' type='image/x-icon' href='/static/assets/img/favicon.ico' />
+</head>
+<body>
+<div class="main-sidebar sidebar-style-2">
+    <aside id="sidebar-wrapper">
+        <div class="sidebar-brand">
+            <a> <img alt="image" src="/static/assets/img/logo.png" class="header-logo" /> <span
+                        class="logo-name">NorthStar</span>
+            </a>
+        </div>
+        <div class="sidebar-user">
+            <div class="sidebar-user-picture">
+                <img alt="image" src="/static/assets/img/user.png">
+            </div>
+            <div class="sidebar-user-details">
+                <div class="user-name">Sarah Smith</div>
+                <div class="user-role">Administrator</div>
+            </div>
+        </div>
+        <div>
+            <ul class="sidebar-menu">
+        <li class="dropdown">
+            <a class="menu-toggle nav-link has-dropdown" href="#"><i
+                        data-feather="chevrons-down"></i><span>History Category Report</span></a>
+            <ul class="dropdown-menu dropdown">
+
+                {{range $index, $case := $.Contents}}
+                    <li class="dropdown">
+                        <a onclick="showDateInfo({{$index}})"><script>document.write(getlocaltime("{{$case.SaveTimeHis}}"))</script> </a></li>
+                {{end}}
+            </ul>
+        </li>
+            </ul>
+        </div>
+    </aside>
+</div>
+<script src="/static/assets/js/app.min.js"></script>
+<!-- JS Libraies -->
+<!-- Page Specific JS File -->
+<!-- Template JS File -->
+<script src="/static/assets/js/scripts.js"></script>
+<!-- Custom JS File -->
+<script src="/static/assets/js/custom.js"></script>
+
+
+</body>
+
+
+</html>
