@@ -57,7 +57,7 @@ func (m *JobAggregateList)SaveAggregateList(jobcatesummlist []JobCateSummList,ve
 		t := time.Now().UTC()
 		ts := t.Format(timeLayoutStr) //time convert tostring
 		st, _ := time.Parse(timeLayoutStr, ts) //string convert to time
-		fmt.Println(st)
+		fmt.Printf("The aggregate save time is: %v\n",st)
 		var jobaggregatelist = make([]JobAggregateList,len(jobcatesummlist))
 		for i,ele := range(jobcatesummlist){
 			jobaggregatelist[i].ProjectName=ele.ProjectName
@@ -81,7 +81,7 @@ func (m *JobAggregateList)CheckSaveTime(version string) (aggregatehistorylist []
 	sqlfmt := "select distinct save_time from "+TNjobAggregateList()+" where release_version='"+version+"' order by save_time desc limit 100"
 	o := orm.NewOrm()
 	_,err = o.Raw(sqlfmt).QueryRows(&savetimelist)
-	fmt.Println(savetimelist)
+	fmt.Printf("The save time list is:%v\n",savetimelist)
 	if err != nil{
 		return
 	}
@@ -93,21 +93,19 @@ func (m *JobAggregateList)CheckSaveTime(version string) (aggregatehistorylist []
 		for i,st := range(savetimelist){
 			var aggregatehistory = make([]AggregateHistory,0)
 			timeToStr:=st.SaveTime.Format(timeLayoutStr)
-			fmt.Println(timeToStr)
-			fmt.Println(i)
+			fmt.Printf("The time string is: %s\n",timeToStr)
 			sqlcheckgroup := "select project_name,release_version, total_job,executed,pass,fail,exe_ratio,pass_ratio,fail_ratio from jobaggregatelist where release_version='6.1.0' and save_time='"+timeToStr+"'"
 			_,err = o.Raw(sqlcheckgroup).QueryRows(&aggregatehistory)
 			if err != nil{
 				log.Error("Encounter error: %v",err)
 			}
-			fmt.Println(aggregatehistory)
+			fmt.Printf("The aggregatehistory is: %v\n",aggregatehistory)
 			aggregatehistorylist[i].SaveTimeHis = st.SaveTime
 			aggregatehistorylist[i].AggregateHistoryLi = aggregatehistory
 		}
 
-		fmt.Println(aggregatehistorylist)
+		fmt.Printf("The aggregatehistorylist is: %v\n",aggregatehistorylist)
 		return aggregatehistorylist,nil
 	}
-	//return aggregatehistorylist,nil
 
 }

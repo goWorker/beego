@@ -43,7 +43,7 @@ func (m *JobInfoList)CateForVersion(version string) (jobcatesummlist []JobCateSu
 		_,err = o.Raw(sqlFmt).QueryRows(&jobcatesummlist)
 
 	}
-	fmt.Println(jobcatesummlist)
+	fmt.Printf("The jobcatesummlist is: %v",jobcatesummlist)
 
 	return
 }
@@ -60,14 +60,14 @@ func (m *JobInfoList)QueryJob(version string)(jobnamelist []JobNameList,err erro
 	sqlfmt := "select distinct job_name from  "+TNjobList()+" where release_version='"+version+"' and job_name not in(select job_name from "+TNjobInfoList()+" where release_version='"+version+"');"
 	o := orm.NewOrm()
 	_,err = o.Raw(sqlfmt).QueryRows(&jobnamelist)
-	fmt.Println(jobnamelist)
+	fmt.Printf("The jobnamelist is: %v\n",jobnamelist)
 	return
 }
 func (jobinfolist *JobInfoList)QueryUnSelectedJob(version string)(jobnamelist []JobNameList,err error){
 	sqlfmt := "select distinct job_name from  "+TNjobList()+" where release_version='"+version+"' and job_name not in(select job_name from "+TNjobInfoList()+" where release_version='"+version+"');"
 	o := orm.NewOrm()
 	_,err = o.Raw(sqlfmt).QueryRows(&jobnamelist)
-	fmt.Println(jobnamelist)
+	fmt.Printf("The jobnamelist is:%v\n",jobnamelist)
 	return
 }
 
@@ -75,7 +75,7 @@ func (jobinfolist *JobInfoList)QuerySelectedJob(version,project_name string)(job
 	sqlfmt := "select job_name from "+TNjobInfoList()+" where release_version='"+version+"' and project_name='"+project_name+"'"
 	o := orm.NewOrm()
 	_,err = o.Raw(sqlfmt).QueryRows(&jobnamelist)
-	fmt.Println(jobnamelist)
+	fmt.Printf("The jobnamelist is:%v\n",jobnamelist)
 	return
 }
 
