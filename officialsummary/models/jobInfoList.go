@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -32,9 +33,12 @@ func (m *JobInfoList)TableName() string {
 func NewJobInfoList() *JobInfoList {
 	return &JobInfoList{}
 }
+var updateDely = beego.AppConfig.String("updateDelay")
+//fmt.Printf("The update delay is %s days\n",updateDely)
+
 func (m *JobInfoList)CateForVersion(version string) (jobcatesummlist []JobCateSummList, err error) {
 
-	sqlFmt := "SELECT t6.project_name as project_name,\n        t6.totalJob as total_job,\n        ifnull(t5.totalExe, 0) as executed,\n        ifnull(t5.totalPass, 0) as pass,\n        ifnull(t5.totalFail, 0) as fail,\n        ifnull(t5.totalExe, 0)/t6.totalJob as exe_ratio,\n        ifnull(t5.totalPass, 0)/t6.totalJob as pass_ratio,\n        ifnull(t5.totalFail, 0)/t6.totalJob as fail_ratio\n FROM (SELECT project_name,sum(exe_num) AS totalJob FROM "+TNjobInfoList()+" a,\n                                                         (SELECT t1.job_name,t1.exe_num\n                                                          FROM "+TNjobList()+" t1,\n                                                               (SELECT job_name, max(id) AS maxId FROM "+TNjobList()+" WHERE release_version = '"+version+"' GROUP BY job_name) t2\n                                                          WHERE t1.id = t2.maxId) b\n       WHERE a.job_name = b.job_name GROUP BY project_name) t6\n          LEFT JOIN\n      (SELECT t4.project_name,sum(t3.exe_num) AS totalExe, sum(t3.pass_num) AS totalPass, sum(t3.fail_num) AS totalFail\n       FROM jobinfolist t4,\n            (SELECT t1.job_name,t1.exe_num,t1.pass_num,t1.fail_num FROM\n                                                                       jobList t1,\n                                                                       (SELECT job_name, max(id) AS maxId FROM jobList WHERE release_version = '"+version+"' AND DATE_FORMAT(finished_time, '%Y-%m-%d') >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%Y-%m-%d') GROUP BY job_name) t2\n             WHERE t1.id = t2.maxId) t3\n       WHERE t4.job_name = t3.job_name  AND t4.release_version = '"+version+"' GROUP BY t4.project_name ) t5\n      ON t6.project_name = t5.project_name;"
+	sqlFmt := "SELECT t6.project_name as project_name,\n  t6.totalJob as total_job,\n  ifnull(t5.totalExe, 0) as executed,\n  ifnull(t5.totalPass, 0) as pass,\n  ifnull(t5.totalFail, 0) as fail,\n  ifnull(t5.totalExe, 0)/t6.totalJob as exe_ratio,\n  ifnull(t5.totalPass, 0)/t6.totalJob as pass_ratio,\n  ifnull(t5.totalFail, 0)/t6.totalJob as fail_ratio\n    FROM (SELECT project_name,sum(exe_num) AS totalJob FROM "+TNjobInfoList()+" a,\n                                                            (SELECT t1.job_name,t1.exe_num\n                                                            FROM "+TNjobList()+" t1,\n                                                                 (SELECT job_name, max(id) AS maxId FROM "+TNjobList()+" WHERE release_version = '"+version+"' GROUP BY job_name) t2\n                                                            WHERE t1.id = t2.maxId) b\n    WHERE a.job_name = b.job_name GROUP BY project_name) t6\n        LEFT JOIN\n        (SELECT t4.project_name,sum(t3.exe_num) AS totalExe, sum(t3.pass_num) AS totalPass, sum(t3.fail_num) AS totalFail\n        FROM "+TNjobInfoList()+" t4,\n             (SELECT t1.job_name,t1.exe_num,t1.pass_num,t1.fail_num FROM\n                                                                      "+TNjobList()+" t1,\n                                                                         (SELECT job_name, max(id) AS maxId FROM "+TNjobList()+" WHERE release_version = '"+version+"' AND DATE_FORMAT(finished_time, '%Y-%m-%d') >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL "+updateDely+" DAY), '%Y-%m-%d') GROUP BY job_name) t2\n             WHERE t1.id = t2.maxId) t3\n        WHERE t4.job_name = t3.job_name  AND t4.release_version = '"+version+"' GROUP BY t4.project_name ) t5\n            ON t6.project_name = t5.project_name;"
 	sqlCount := "select count(*) cnt from "+TNjobInfoList()
 	o := orm.NewOrm()
 	var params []orm.Params
@@ -89,11 +93,6 @@ func (jobinfolist *JobInfoList)Delete(version,project_name string) error{
 	if err != nil {
 		return err
 	}
-	//for _, item := range jobs {
-	//	project_nameId := item.Id
-	//	o.QueryTable(jobinfolist.TableName()).Filter("id", project_nameId).Delete()
-	//}
-	//return nil
 	project_nameid := make([]int, len(jobs))
 	for _,item := range jobs{
 		project_nameid = append(project_nameid, item.Id)

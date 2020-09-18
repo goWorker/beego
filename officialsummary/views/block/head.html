@@ -25,7 +25,7 @@
             console.log(end_date_format)
             seconds = moment(end_date,"YYYY-MM-DD HH:mm:ss").diff(moment(start_date,"YYYY-MM-DD HH:mm:ss"))
             console.log(seconds)
-            if (seconds > 1000*60*60*24*8) {
+            if (seconds > 1000*60*60*24*4) {
 //                document.getElementById("finishtime_"+id).className='badge-danger'
                 document.getElementById("finishtime_"+id).style.color='red'
                 document.getElementById("finishtime_"+id).style.fontWeight='bold'

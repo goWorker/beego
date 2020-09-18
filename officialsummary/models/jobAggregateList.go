@@ -94,7 +94,7 @@ func (m *JobAggregateList)CheckSaveTime(version string) (aggregatehistorylist []
 			var aggregatehistory = make([]AggregateHistory,0)
 			timeToStr:=st.SaveTime.Format(timeLayoutStr)
 			fmt.Printf("The time string is: %s\n",timeToStr)
-			sqlcheckgroup := "select project_name,release_version, total_job,executed,pass,fail,exe_ratio,pass_ratio,fail_ratio from jobaggregatelist where release_version='6.1.0' and save_time='"+timeToStr+"'"
+			sqlcheckgroup := "select project_name,release_version, total_job,executed,pass,fail,exe_ratio,pass_ratio,fail_ratio from jobaggregatelist where release_version='"+version+"' and save_time='"+timeToStr+"'"
 			_,err = o.Raw(sqlcheckgroup).QueryRows(&aggregatehistory)
 			if err != nil{
 				log.Error("Encounter error: %v",err)
