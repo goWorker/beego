@@ -1,6 +1,7 @@
 package main
 
 import (
+	"officialsummary/controllers"
 	_ "officialsummary/routers"
 	_ "officialsummary/sysinit"
 	"github.com/astaxie/beego"
@@ -8,6 +9,7 @@ import (
 
 func main() {
 	beego.SetStaticPath("/static", "./static")
+	beego.ErrorController(&controllers.ErrorController{})
 	beego.Run()
 }
 
