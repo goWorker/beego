@@ -21,8 +21,9 @@ type JobList struct{
 	Source 			string		`orm:"size(100);null" json:"source"`
 	Comment 		string		`orm:"size(100);null" json:"comment"`
 	Owner			string		`orm:"size(100);null" json:"owner"`
-	LogUrl			string		`orm:"size(100);null" json:"log_url"`
+	LogUrl			string		`orm:"size(200);null" json:"log_url"`
 	FinishedTime 	time.Time	`orm:"default(auto_now_add);type(datetime)" json:"finished_time"`
+	Build 			string 		`orm:"size(100);null" json:"build"`
 }
 func (m *JobList) TableName() string {
 	return TNjobList()

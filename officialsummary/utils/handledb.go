@@ -34,7 +34,17 @@ type Suite struct{
 	//XMLName		xml.Name	`xml:suite`
 	//Suite	[]NextSuite 	`xml:"suite"`
 	Status 	SuiteStatus		`xml:"status"`
-
+	Metadata 	ItemList 		`xml:"metadata"`
+}
+type ItemList struct{
+	Item 	[]Item		`xml:"item"`
+	//Name 	string		`xml:"name,attr"`
+}
+type Item struct {
+	Item		string 		`xml:",innerxml"`
+	//Build_Version	string 	`xml:"Build_Version，attr"`
+	//Job_Owner	string 	`xml:",innerxml"`
+	//Tag  	string 	`xml:",innerxml"`
 }
 type SuiteStatus struct{
 	Status	string	`xml:"status,attr"`
